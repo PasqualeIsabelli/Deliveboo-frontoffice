@@ -5,4 +5,7 @@ import App from './App.vue'
 
 import { router } from './router.js'
 
-createApp(App).use(router).mount('#app')
+createApp(App)
+    // informa vuew che vogliamo usare il router
+    .use(router)
+    .mount('#app')

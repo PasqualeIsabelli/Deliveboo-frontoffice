@@ -14,7 +14,7 @@ export default {
 <template>
   <TheHeader></TheHeader>
 
-  <!-- rotta alla pagina -->
+  <!-- Questo è il punto in cui il componente corrispondente alla route corrente verrà renderizzato -->
   <main>
     <router-view />
   </main>
