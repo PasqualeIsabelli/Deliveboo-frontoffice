@@ -1,13 +1,12 @@
 <script>
-import TheFooter from "./components/TheFooter.vue";
-import TheHeader from "./components/TheHeader.vue";
-import RestaurantTypes from './components/RestaurantTypes.vue';
+import TheHeader from "../components/TheHeader.vue";
+import RestaurantTypes from '../components/RestaurantTypes.vue';
+import TheFooter from "../components/TheFooter.vue";
 
 
 export default {
     components: {
         TheHeader,
-        TheMain,
         TheFooter,
         RestaurantTypes,
     },
