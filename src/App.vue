@@ -1,22 +1,24 @@
 <script>
-import TheFooter from "./components/TheFooter.vue";
 import TheHeader from "./components/TheHeader.vue";
-import TheMain from "./components/TheMain.vue";
+import TheFooter from "./components/TheFooter.vue";
 
 
 export default {
   components: {
     TheHeader,
-    TheMain,
     TheFooter,
-    RestaurantTypes,
   },
 };
 </script>
 
 <template>
   <TheHeader></TheHeader>
-  <TheMain></TheMain>
+
+  <!-- Questo è il punto in cui il componente corrispondente alla route corrente verrà renderizzato -->
+  <main>
+    <router-view />
+  </main>
+
   <TheFooter></TheFooter>
 </template>
 

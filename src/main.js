@@ -3,4 +3,10 @@ import { createApp } from 'vue'
 import './scss/general.scss'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+// import del router
+import { router } from './router.js'
+
+createApp(App)
+    // informa vuew che vogliamo usare il router
+    .use(router)
+    .mount('#app')

@@ -1,16 +1,18 @@
 <script>
+import { router } from '../router';
+
 export default {
-
-
+    components: { router }
 }
 </script>
 
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid py-4">
         <div class="container">
             <div class="nav d-flex justify-content-between align-items-center">
-                <a href="#0"><img src="../assets/images/logo.png" alt=""></a>
-                <a href="#0">Accedi</a>
+                <router-link to="/"><img src="" alt=""></router-link>
+                <!-- rotta che porta al login del back-office -->
+                <a href="http://127.0.0.1:8000/login" target="_blank">Accedi</a>
             </div>
         </div>
     </div>
@@ -18,7 +20,7 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-    background-color: rgb(92, 15, 180);
+    background-color: rgb(4, 189, 196);
 
     img {
         width: 150px;
