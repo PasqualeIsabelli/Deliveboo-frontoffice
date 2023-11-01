@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import './scss/general.scss'
 import App from './App.vue'
 
+// import del router
 import { router } from './router.js'
 
 createApp(App)
