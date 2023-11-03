@@ -32,7 +32,7 @@ export default {
     <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
         <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active" v-for="type in types" :key="type.id">
+                <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
                     <a href="#0" class="card">
                         <img :src=getImg(type) class="card-img-top" alt="">
                         <div class="card-body d-flex align-items-center justify-content-center">
@@ -50,176 +50,40 @@ export default {
                 <span><i class="fa-solid fa-chevron-right"></i></span>
             </button>
         </div>
+        <!-- <div class="row g-3 justify-content-center" >
+            <div class="col-2" v-for="(type, i) in types">
+                <a href="#0" class="card">
+                    <img :src=getImg(type) class="card-img-top" alt="">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-text text-center">{{ type.name }}</h3>
+                    </div>
+                </a>
+            </div>
+        </div> -->
     </div>
 
     <!-- slider md -->
     <div class="container-fluid p-5 d-none d-md-block d-lg-none">
-        <div id="carouselExampleInterval" class="carousel slide d-none d-sm-none d-md-block d-lg-block"
-            data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Hamburger</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Fritture</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">BBQ</h3>
-                                </div>
-                            </a>
-                        </div>
+        <div class="row g-3 justify-content-center" >
+            <div class="col-3" v-for="(type, i) in types">
+                <a href="#0" class="card">
+                    <img :src=getImg(type) class="card-img-top" alt="">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                </div>
-                <div class="carousel-item active">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Hamburger</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Fritture</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">BBQ</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item active">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Hamburger</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Fritture</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">BBQ</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span><i class="fa-solid fa-chevron-left"></i></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span><i class="fa-solid fa-chevron-right"></i></span>
-            </button>
         </div>
     </div>
+
 
     <!-- card in lg -->
     <div class="container-fluid">
         <div class="container d-none d-md-none d-lg-flex py-5 gap-5 justify-content-center">
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
+            <a href="#0" class="card" v-for="(type, i) in types">
+                <img :src=getImg(type) class="card-img-top" alt="">
                 <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">BBQ</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/dolci.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">dolci</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/fish.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">pesce</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">fritti</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top my-width" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">hamburger</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/kebab.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">kebab</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/pizza.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">pizza</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/salad.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">salad</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/sandwich.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">sandwich</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/spaghetti.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">spaghetti</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/sushi.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">sushi</h3>
+                    <h3 class="card-text text-center">{{ type.name }}</h3>
                 </div>
             </a>
         </div>
