@@ -1,6 +1,29 @@
 <script>
-export default {
+import axios from 'axios';
 
+export default {
+    data() {
+        return {
+            types: [],
+        }
+    },
+    methods: {
+        fetchData() {
+            axios.get('http://127.0.0.1:8000/api/types')
+                .then((response) => {
+                    // salviamo la lista delle tipologie dei ristoranti
+                    this.types = response.data.results;
+                    console.log(this.types);
+                })
+        },
+        getImg(type) {
+            return `http://127.0.0.1:8000/storage/${type.img}`;
+        }
+
+    },
+    mounted() {
+        this.fetchData();
+    }
 }
 </script>
 
@@ -9,27 +32,11 @@ export default {
     <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
         <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
+                <div class="carousel-item active" v-for="type in types" :key="type.id">
                     <a href="#0" class="card">
-                        <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
+                        <img :src=getImg(type) class="card-img-top" alt="">
                         <div class="card-body d-flex align-items-center justify-content-center">
-                            <h3 class="card-text text-center">Hamburger</h3>
-                        </div>
-                    </a>
-                </div>
-                <div class="carousel-item">
-                    <a href="#0" class="card">
-                        <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <h3 class="card-text text-center">Hamburger</h3>
-                        </div>
-                    </a>
-                </div>
-                <div class="carousel-item">
-                    <a href="#0" class="card">
-                        <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <h3 class="card-text text-center">Hamburger</h3>
+                            <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
                     </a>
                 </div>
