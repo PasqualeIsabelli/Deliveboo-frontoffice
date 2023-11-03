@@ -5,6 +5,7 @@ export default {
     data() {
         return {
             types: [],
+            selectedTypes: [],
         }
     },
     methods: {
@@ -19,7 +20,6 @@ export default {
         getImg(type) {
             return `http://127.0.0.1:8000/storage/${type.img}`;
         }
-
     },
     mounted() {
         this.fetchData();
