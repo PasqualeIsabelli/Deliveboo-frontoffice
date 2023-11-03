@@ -1,6 +1,53 @@
 <script>
-export default {
+import axios from 'axios';
 
+export default {
+    data() {
+        return {
+            types: [],
+            selectedTypes: [],  // Array per i tipi selezionati
+            selectedRestaurants: []
+        }
+    },
+    methods: {
+        fetchData() {
+            axios.get('http://127.0.0.1:8000/api/types')
+                .then((response) => {
+                    // salviamo la lista delle tipologie dei ristoranti
+                    this.types = response.data.results;
+                    console.log(this.types);
+                })
+        },
+        getImg(type) {
+            return `http://127.0.0.1:8000/storage/${type.img}`;
+        },
+        isSelectedType(type) {
+            return this.selectedTypes.some(selectedType => selectedType.id === type.id);
+        },
+        sendData(type) {
+            // Verifica se il tipo è già selezionato
+            const index = this.selectedTypes.findIndex(selectedType => selectedType.id === type.id);
+
+            if (index === -1) {
+                // Se il tipo non è già selezionato, aggiungilo
+                this.selectedTypes.push(type);
+            } else {
+                // Se il tipo è già selezionato, rimuovilo
+                this.selectedTypes.splice(index, 1);
+            }
+
+            // Aggiorna la lista dei ristoranti in base ai tipi selezionati
+            this.selectedRestaurants = this.selectedTypes.length > 0 ? this.selectedTypes[0].restaurants.filter(restaurant => {
+                    return this.selectedTypes.every(selectedType => {
+                        return selectedType.restaurants.some(typeRestaurant => typeRestaurant.id === restaurant.id);
+                    });
+                })
+                : [];
+        }
+    },
+    mounted() {
+        this.fetchData();
+    }
 }
 </script>
 
@@ -9,29 +56,14 @@ export default {
     <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
         <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <a href="#0" class="card">
-                        <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
+                <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
+                    <div class="card" :data-id="type.id" @click="sendData(type)">
+                        <img :src=getImg(type) class="card-img-top" alt="">
                         <div class="card-body d-flex align-items-center justify-content-center">
-                            <h3 class="card-text text-center">Hamburger</h3>
+                            <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
-                    </a>
-                </div>
-                <div class="carousel-item">
-                    <a href="#0" class="card">
-                        <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <h3 class="card-text text-center">Hamburger</h3>
-                        </div>
-                    </a>
-                </div>
-                <div class="carousel-item">
-                    <a href="#0" class="card">
-                        <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <h3 class="card-text text-center">Hamburger</h3>
-                        </div>
-                    </a>
+                        <div class="overlay" v-if="isSelectedType(type)">Selected</div>
+                    </div>
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
@@ -43,178 +75,51 @@ export default {
                 <span><i class="fa-solid fa-chevron-right"></i></span>
             </button>
         </div>
+        <!-- <div class="row g-3 justify-content-center" >
+            <div class="col-2" v-for="(type, i) in types">
+                <a href="#0" class="card">
+                    <img :src=getImg(type) class="card-img-top" alt="">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-text text-center">{{ type.name }}</h3>
+                    </div>
+                </a>
+            </div>
+        </div> -->
     </div>
 
     <!-- slider md -->
     <div class="container-fluid p-5 d-none d-md-block d-lg-none">
-        <div id="carouselExampleInterval" class="carousel slide d-none d-sm-none d-md-block d-lg-block"
-            data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Hamburger</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Fritture</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">BBQ</h3>
-                                </div>
-                            </a>
-                        </div>
+        <div class="row g-3 justify-content-center">
+            <div class="col-3" v-for="(type, i) in types">
+                <a href="#0" class="card">
+                    <img :src=getImg(type) class="card-img-top" alt="">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                </div>
-                <div class="carousel-item active">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Hamburger</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Fritture</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">BBQ</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item active">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Hamburger</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">Fritture</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm col-md-3 col-lg-3">
-                            <a href="#0" class="card">
-                                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                                <div class="card-body d-flex align-items-center justify-content-center">
-                                    <h3 class="card-text text-center">BBQ</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="prev">
-                <span><i class="fa-solid fa-chevron-left"></i></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                data-bs-slide="next">
-                <span><i class="fa-solid fa-chevron-right"></i></span>
-            </button>
         </div>
     </div>
+
 
     <!-- card in lg -->
     <div class="container-fluid">
         <div class="container d-none d-md-none d-lg-flex py-5 gap-5 justify-content-center">
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/carne.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">BBQ</h3>
+            <div v-for="(type, id) in types" :key="type.id">
+                <div class="card" :data-id="type.id" @click="sendData(type)">
+                    <img :src=getImg(type) class="card-img-top" alt="">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-text text-center">{{ type.name }}</h3>
+                    </div>
+                    <div class="overlay" v-if="isSelectedType(type)">Selected</div>
                 </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/dolci.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">dolci</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/fish.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">pesce</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/fried-potatoes.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">fritti</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/hamburger.png" class="card-img-top my-width" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">hamburger</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/kebab.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">kebab</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/pizza.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">pizza</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/salad.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">salad</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/sandwich.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">sandwich</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/spaghetti.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">spaghetti</h3>
-                </div>
-            </a>
-            <a href="#0" class="card">
-                <img src="../assets/images/Type/icon/sushi.png" class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">sushi</h3>
-                </div>
-            </a>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;" v-for="restaurant in this.selectedRestaurants">
+            <div class="card-body">
+                <h5 class="card-title">{{ restaurant.activity_name }}</h5>
+            </div>
         </div>
     </div>
 </template>
