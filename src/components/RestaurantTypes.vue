@@ -5,7 +5,8 @@ export default {
     data() {
         return {
             types: [],
-            selectedTypes: [],
+            selectedTypes: [],  // Array per i tipi selezionati
+            selectedRestaurants: []
         }
     },
     methods: {
@@ -19,6 +20,29 @@ export default {
         },
         getImg(type) {
             return `http://127.0.0.1:8000/storage/${type.img}`;
+        },
+        isSelectedType(type) {
+            return this.selectedTypes.some(selectedType => selectedType.id === type.id);
+        },
+        sendData(type) {
+            // Verifica se il tipo è già selezionato
+            const index = this.selectedTypes.findIndex(selectedType => selectedType.id === type.id);
+
+            if (index === -1) {
+                // Se il tipo non è già selezionato, aggiungilo
+                this.selectedTypes.push(type);
+            } else {
+                // Se il tipo è già selezionato, rimuovilo
+                this.selectedTypes.splice(index, 1);
+            }
+
+            // Aggiorna la lista dei ristoranti in base ai tipi selezionati
+            this.selectedRestaurants = this.selectedTypes.length > 0 ? this.selectedTypes[0].restaurants.filter(restaurant => {
+                    return this.selectedTypes.every(selectedType => {
+                        return selectedType.restaurants.some(typeRestaurant => typeRestaurant.id === restaurant.id);
+                    });
+                })
+                : [];
         }
     },
     mounted() {
@@ -33,12 +57,13 @@ export default {
         <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
-                    <a href="#0" class="card">
+                    <div class="card" :data-id="type.id" @click="sendData(type)">
                         <img :src=getImg(type) class="card-img-top" alt="">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
-                    </a>
+                        <div class="overlay" v-if="isSelectedType(type)">Selected</div>
+                    </div>
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
@@ -64,7 +89,7 @@ export default {
 
     <!-- slider md -->
     <div class="container-fluid p-5 d-none d-md-block d-lg-none">
-        <div class="row g-3 justify-content-center" >
+        <div class="row g-3 justify-content-center">
             <div class="col-3" v-for="(type, i) in types">
                 <a href="#0" class="card">
                     <img :src=getImg(type) class="card-img-top" alt="">
@@ -80,12 +105,21 @@ export default {
     <!-- card in lg -->
     <div class="container-fluid">
         <div class="container d-none d-md-none d-lg-flex py-5 gap-5 justify-content-center">
-            <a href="#0" class="card" v-for="(type, i) in types">
-                <img :src=getImg(type) class="card-img-top" alt="">
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <h3 class="card-text text-center">{{ type.name }}</h3>
+            <div v-for="(type, id) in types" :key="type.id">
+                <div class="card" :data-id="type.id" @click="sendData(type)">
+                    <img :src=getImg(type) class="card-img-top" alt="">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h3 class="card-text text-center">{{ type.name }}</h3>
+                    </div>
+                    <div class="overlay" v-if="isSelectedType(type)">Selected</div>
                 </div>
-            </a>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;" v-for="restaurant in this.selectedRestaurants">
+            <div class="card-body">
+                <h5 class="card-title">{{ restaurant.activity_name }}</h5>
+            </div>
         </div>
     </div>
 </template>
