@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-    <RestaurantTypes />
+    <RestaurantTypes/>
 </template>
 
 <style lang="scss" scoped></style>

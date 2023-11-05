@@ -1,5 +1,7 @@
 <script>
 
+import axios from 'axios';
+
 export default {
     components: {
 
@@ -11,7 +13,7 @@ export default {
     },
     methods: {
         fetchData() {
-            axios.get('http://127.0.0.1:8000/api/restaurant/' + this.$route.params.id)
+            axios.get('http://127.0.0.1:8000/api/restaurants/' + this.$route.params.id)
                 .then((response) => {
                     this.restaurant = response.data;
                     console.log(this.restaurant);
