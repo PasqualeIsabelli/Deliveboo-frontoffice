@@ -38,11 +38,34 @@ export default {
 
             // Aggiorna la lista dei ristoranti in base ai tipi selezionati
             this.selectedRestaurants = this.selectedTypes.length > 0 ? this.selectedTypes[0].restaurants.filter(restaurant => {
-                    return this.selectedTypes.every(selectedType => {
-                        return selectedType.restaurants.some(typeRestaurant => typeRestaurant.id === restaurant.id);
-                    });
-                })
+                return this.selectedTypes.every(selectedType => {
+                    return selectedType.restaurants.some(typeRestaurant => typeRestaurant.id === restaurant.id);
+                });
+            })
                 : [];
+
+            // Verifica se ci sono almeno due tipi selezionati
+            const twoOrMoreSelected = this.selectedTypes.length >= 2;
+
+            // Se ci sono almeno due tipi selezionati, verifica la mancata corrispondenza
+            if (twoOrMoreSelected) {
+                const missingMatch = this.selectedTypes.some(selectedType => {
+                    return this.selectedTypes.every(otherType => {
+                        if (selectedType.id !== otherType.id) {
+                            return !selectedType.restaurants.some(typeRestaurant => {
+                                return otherType.restaurants.some(otherTypeRestaurant => typeRestaurant.id === otherTypeRestaurant.id);
+                            });
+                        }
+                        return true;
+                    });
+                });
+
+                // Imposta la variabile di dati per mostrare o nascondere il messaggio
+                this.showMissingMatchMessage = missingMatch;
+            } else {
+                // Se ci sono meno di due tipi selezionati, nascondi il messaggio
+                this.showMissingMatchMessage = false;
+            }
         }
     },
     mounted() {
@@ -120,6 +143,9 @@ export default {
             <div class="card-body">
                 <h5 class="card-title">{{ restaurant.activity_name }}</h5>
             </div>
+        </div>
+        <div v-if="showMissingMatchMessage" >
+            <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
         </div>
     </div>
 </template>
