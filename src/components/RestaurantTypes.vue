@@ -126,12 +126,13 @@ export default {
     <div class="container-fluid p-5 d-none d-md-block d-lg-none">
         <div class="row g-3 justify-content-center">
             <div class="col-3" v-for="(type, i) in types">
-                <a href="#0" class="card">
+                <div class="card" :data-id="type.id" @click="sendData(type)">
                     <img :src=getImg(type) class="card-img-top" alt="">
                     <div class="card-body d-flex align-items-center justify-content-center">
                         <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                </a>
+                </div>
+                <div class="overlay" v-if="checkedType(type)">Selected</div>
             </div>
         </div>
     </div>
@@ -152,29 +153,19 @@ export default {
         </div>
     </div>
 
-    <div class="container">
-        <div class="row g-3">
-            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in this.selectedRestaurants">
-                <!-- <div class="card">
-                    <img :src="getImg(restaurant)" class="card-img-top" alt="">
-                    <div class="card-body">
-                        <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
-                            <h5 class="card-title">{{ restaurant.activity_name }}</h5>
-                        </router-link>
-                    </div>
-                </div> -->
+    <div class="container pb-5">
+        <div class="row gy-5">
+            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center"
+                v-for="restaurant in this.selectedRestaurants">
                 <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
-                    <!-- <div class="card my-card text-bg-dark">
-                        <img :src="getImg(restaurant)" class="card-img my-card-img" alt="...">
-                        <div class="card-img-overlay d-flex align-items-center justify-content-center">
-                            <h5 class="card-title text-uppercase fw-bold">{{ restaurant.activity_name }}</h5>
-                        </div>
-                    </div> -->
-                    <div class="my-card">
+                    <!-- <div class="my-card">
                         <div class="card-details">
-                            <img :src="getImg(restaurant)" class="card-img" alt="...">
                         </div>
                         <div class="card-button" href="#link">{{ restaurant.activity_name }}</div>
+                    </div> -->
+                    <div class="my-card">
+                        <img :src="getImg(restaurant)" class="my-card-img" alt="...">
+                        <div class="my-text ">{{ restaurant.activity_name }}</div>
                     </div>
                 </router-link>
             </div>
@@ -182,7 +173,7 @@ export default {
     </div>
 
     <div v-if="showMessage">
-        <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
+        <h1 class="fw-bold text-center text-danger p-5">Nessun ristorante trovato!</h1>
     </div>
 </template>
 
@@ -233,74 +224,69 @@ export default {
 
 .container {
     .my-card {
-        width: 100%;
-        border-radius: 20px;
-        background: #f5f5f5;
+        min-width: 299px;
+        background-color: rgb(27, 167, 167);
+        border-radius: 10px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+        font-size: 16px;
+        transition: all 0.3s ease;
         position: relative;
-        border: 2px solid #c3c6ce;
-        -webkit-transition: 0.5s ease-out;
-        transition: 0.5s ease-out;
-        overflow: visible;
-    }
-
-    .card-details {
-        color: rgb(0, 0, 0);
-        height: 100%;
-        gap: .5em;
-        display: grid;
-        place-content: center;
-        font-family: 'Courier New', Courier, monospace;
-    }
-
-    .card-button {
-        text-decoration: none;
-        text-align: center;
-        -webkit-transform: translate(-50%, 125%);
-        -ms-transform: translate(-50%, 125%);
-        transform: translate(-50%, 125%);
-        width: 70%;
-        border-radius: 1rem;
-        border: none;
-        background-color: rgb(0, 128, 248);
-        color: #fff;
-        font-size: 1rem;
-        padding: .5rem 1rem;
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        opacity: 0;
-        -webkit-transition: 0.3s ease-out;
-        transition: 0.3s ease-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
         cursor: pointer;
-        font-family: 'Courier New', Courier, monospace;
+        font-family: 'Poppins', sans-serif;
+
+        .my-card-img {
+            max-height: 168px;
+            min-width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
     }
 
-    .text-body {
-        color: rgb(134, 134, 134);
+
+    .my-card .my-text {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 15px;
+        text-align: center;
+        color: white;
+        font-weight: 200;
+        letter-spacing: 2px;
+        opacity: 0;
+        max-height: 0;
+        transition: all 0.3s ease;
     }
 
-    /*Text*/
-    .text-title {
-        font-size: 1.5em;
-        font-weight: bold;
-    }
-
-    /*Hover*/
-    .my-card:hover {
-        border-color: #00f0f8;
-        -webkit-box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
-        box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
-    }
-
-    .my-card:hover .card-button {
-        -webkit-transform: translate(-50%, 50%);
-        -ms-transform: translate(-50%, 50%);
-        transform: translate(-50%, 50%);
+    .my-card:hover .my-text {
+        transition: all 0.5s ease;
         opacity: 1;
+        max-height: 40px;
+        margin: 10px;
     }
+}
 
-    .card-img {
-        overflow: hidden;
+@media screen { 
+    
+}
+
+/* Media query per breakpoint 'sm' (576px a 767px) */
+@media screen and (min-width: 0) and (max-width: 767px) {
+    .container .my-card .my-text {
+        opacity: 1;
+        max-height: 40px;
+        margin: 10px;
+    }
+}
+
+/* Media query per breakpoint 'md' (768px a 1400px) */
+@media screen and (min-width: 768px) and (max-width: 1400px) {
+    .container .my-card .my-text {
+        opacity: 1;
+        max-height: 40px;
+        margin: 10px;
     }
 }
 </style>
