@@ -139,15 +139,24 @@ export default {
             </div>
         </div>
 
-        <div class="card" style="width: 18rem;" v-for="restaurant in this.selectedRestaurants">
-            <div class="card-body">
-                <h5 class="card-title">{{ restaurant.activity_name }}</h5>
+        
+        
+
+            <div class="card" style="width: 18rem;" v-for="restaurant in this.selectedRestaurants">
+                <div class="card-body">
+                    <router-link :to="{name:'restaurants.show', params: {id: restaurant.id}}">
+                    <img :src="getImg(restaurant)" alt="">
+                    <h5 class="card-title">{{ restaurant.activity_name }}</h5>
+                    </router-link>
+                </div>
             </div>
-        </div>
+
         <div v-if="showMissingMatchMessage" >
             <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
         </div>
+
     </div>
+
 </template>
 
 <style lang="scss" scoped>
