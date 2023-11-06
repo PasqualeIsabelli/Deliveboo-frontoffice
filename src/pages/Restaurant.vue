@@ -47,12 +47,14 @@ export default {
   },
 
   mounted() {
-    // Accedi al primo elemento e confronta il restaurant_id
-    if (this.items[0].restaurant_id != this.$route.params.id) {
-      this.items = [];
-      this.localStorage();
+    //se l'array items ha almeno un elemento allora esegui l'altro if
+    if (this.items.length > 0) {
+      // Accedi al primo elemento e confronta il restaurant_id
+      if (this.items[0].restaurant_id != this.$route.params.id) {
+        this.items = [];
+        this.localStorage();
+      }
     }
-
     this.fetchData();
   },
   created() {
