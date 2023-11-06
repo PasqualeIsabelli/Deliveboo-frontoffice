@@ -4,16 +4,16 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            types: [],
-            selectedTypes: [],  // Array per i tipi selezionati
-            selectedRestaurants: []
+            types: [], // Array contenente tutti i types del DB
+            selectedTypes: [],  // Array per i types selezionati
+            selectedRestaurants: [] // Array per i restaurants selezionati
         }
     },
     methods: {
         fetchData() {
             axios.get('http://127.0.0.1:8000/api/types')
                 .then((response) => {
-                    // salviamo la lista delle tipologie dei ristoranti
+                    // Salviamo la lista delle tipologie dei ristoranti
                     this.types = response.data.results;
                     console.log(this.types);
                 })
@@ -21,35 +21,46 @@ export default {
         getImg(type) {
             return `http://127.0.0.1:8000/storage/${type.img}`;
         },
-        isSelectedType(type) {
+        // Verifichiamo se un type è stato selezionato confrontanto il suo id con gli id dei types presenti nell'array selectedTypes
+        // Se trova una corrispondenza restituirà true altrimenti false
+        checkedType(type) {
             return this.selectedTypes.some(selectedType => selectedType.id === type.id);
         },
         sendData(type) {
-            // Verifica se il tipo è già selezionato
+            // Verifichiamo se il type è già selezionato
             const index = this.selectedTypes.findIndex(selectedType => selectedType.id === type.id);
 
             if (index === -1) {
-                // Se il tipo non è già selezionato, aggiungilo
+                // Se il type non è già selezionato, lo aggiunge nell'array selectedTypes
                 this.selectedTypes.push(type);
             } else {
-                // Se il tipo è già selezionato, rimuovilo
+                // Se il type è già selezionato, lo rimuove dall'array selectedTypes
                 this.selectedTypes.splice(index, 1);
             }
 
-            // Aggiorna la lista dei ristoranti in base ai tipi selezionati
+            // Aggiorniamo la lista dei ristoranti in base ai type selezionati utilizzando l'array selectedRestaurants
+            // Verifichiamo se almeno un type è stato selezionato con la condizione: this.selectedTypes.length > 0 
+            // Filtriamo tutti i ristoranti in base al primo type selezionato con la funzione: this.selectedTypes[0].restaurants.filter
             this.selectedRestaurants = this.selectedTypes.length > 0 ? this.selectedTypes[0].restaurants.filter(restaurant => {
+                // Con la funzione every() passiamo all'array selectedTypes tutti i type selezionati uno alla volta
                 return this.selectedTypes.every(selectedType => {
+                    // Con la funzione some() verifichiamo se ogni type selezionato ha almeno un ristorante in comune con il primo ristorante in esame
                     return selectedType.restaurants.some(typeRestaurant => typeRestaurant.id === restaurant.id);
+                    // Se la condizione è vera per tutti i tipi selezionati, il ristorante viene incluso nell'array selectedRestaurant altrimenti viene escluso
                 });
             })
                 : [];
 
-            // Verifica se ci sono almeno due tipi selezionati
-            const twoOrMoreSelected = this.selectedTypes.length >= 2;
+            // Verifichiamo se almeno due types sono selezionati con la condizione: this.selectedTypes.length >= 2
+            const verifyingTypesSelected = this.selectedTypes.length >= 2;
 
-            // Se ci sono almeno due tipi selezionati, verifica la mancata corrispondenza
-            if (twoOrMoreSelected) {
+            // Verifica se ci sono almeno due types selezionati
+            if (verifyingTypesSelected) {
+                // Se ci sono, verifica le corrispondenze tra i due types
                 const missingMatch = this.selectedTypes.some(selectedType => {
+                    // Viene effettuato un doppio ciclo dove grazie alle funzioni every() e some(), si confrontano tutti i ristoranti appartenenti ai types selezionati
+                    // Se tra i ristoranti appartenenti a questi types non c'è alcuna corrispondenza, la funzione missingMatch verrà impostata su true e i ristoranti in questione verranno esclusi
+                    // Altrimenti resterà su false e verranno mostrati i ristoranti appartenenti a tutti i types selezionati
                     return this.selectedTypes.every(otherType => {
                         if (selectedType.id !== otherType.id) {
                             return !selectedType.restaurants.some(typeRestaurant => {
@@ -60,11 +71,12 @@ export default {
                     });
                 });
 
-                // Imposta la variabile di dati per mostrare o nascondere il messaggio
-                this.showMissingMatchMessage = missingMatch;
+                // Impostiamo la variabile che ci permette di mostrare o nascondere il messaggio in base al risultato ricevuto dalle corrispondenze tra i ristoranti
+                // Se non c'è alcuna corrispondenza, allora il messaggio verrà mostrato
+                this.showMessage = missingMatch;
             } else {
-                // Se ci sono meno di due tipi selezionati, nascondi il messaggio
-                this.showMissingMatchMessage = false;
+                // Altrimenti il messaggio verrà nascosto
+                this.showMessage = false;
             }
         }
     },
@@ -85,7 +97,7 @@ export default {
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
-                        <div class="overlay" v-if="isSelectedType(type)">Selected</div>
+                        <div class="overlay" v-if="checkedType(type)">Selected</div>
                     </div>
                 </div>
             </div>
@@ -114,12 +126,13 @@ export default {
     <div class="container-fluid p-5 d-none d-md-block d-lg-none">
         <div class="row g-3 justify-content-center">
             <div class="col-3" v-for="(type, i) in types">
-                <a href="#0" class="card">
+                <div class="card" :data-id="type.id" @click="sendData(type)">
                     <img :src=getImg(type) class="card-img-top" alt="">
                     <div class="card-body d-flex align-items-center justify-content-center">
                         <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                </a>
+                </div>
+                <div class="overlay" v-if="checkedType(type)">Selected</div>
             </div>
         </div>
     </div>
@@ -134,29 +147,34 @@ export default {
                     <div class="card-body d-flex align-items-center justify-content-center">
                         <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                    <div class="overlay" v-if="isSelectedType(type)">Selected</div>
+                    <div class="overlay" v-if="checkedType(type)">Selected</div>
                 </div>
             </div>
         </div>
-
-        
-        
-
-            <div class="card" style="width: 18rem;" v-for="restaurant in this.selectedRestaurants">
-                <div class="card-body">
-                    <router-link :to="{name:'restaurants.show', params: {id: restaurant.id}}">
-                    <img :src="getImg(restaurant)" alt="">
-                    <h5 class="card-title">{{ restaurant.activity_name }}</h5>
-                    </router-link>
-                </div>
-            </div>
-
-        <div v-if="showMissingMatchMessage" >
-            <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
-        </div>
-
     </div>
 
+    <div class="container pb-5">
+        <div class="row gy-5">
+            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center"
+                v-for="restaurant in this.selectedRestaurants">
+                <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
+                    <!-- <div class="my-card">
+                        <div class="card-details">
+                        </div>
+                        <div class="card-button" href="#link">{{ restaurant.activity_name }}</div>
+                    </div> -->
+                    <div class="my-card">
+                        <img :src="getImg(restaurant)" class="my-card-img" alt="...">
+                        <div class="my-text ">{{ restaurant.activity_name }}</div>
+                    </div>
+                </router-link>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="showMessage">
+        <h1 class="fw-bold text-center text-danger p-5">Nessun ristorante trovato!</h1>
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -171,10 +189,6 @@ export default {
             height: 100px;
             object-fit: contain;
             object-position: center;
-        }
-
-        .card-img-overlay {
-            color: white;
         }
 
         h3 {
@@ -206,6 +220,74 @@ export default {
 
 .container-p-s {
     padding: 0 50px;
+}
+
+.container {
+    .my-card {
+        min-width: 299px;
+        background-color: rgb(27, 167, 167);
+        border-radius: 10px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+        font-size: 16px;
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+
+        .my-card-img {
+            max-height: 168px;
+            min-width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    }
+
+
+    .my-card .my-text {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 15px;
+        text-align: center;
+        color: white;
+        font-weight: 200;
+        letter-spacing: 2px;
+        opacity: 0;
+        max-height: 0;
+        transition: all 0.3s ease;
+    }
+
+    .my-card:hover .my-text {
+        transition: all 0.5s ease;
+        opacity: 1;
+        max-height: 40px;
+        margin: 10px;
+    }
+}
+
+@media screen { 
+    
+}
+
+/* Media query per breakpoint 'sm' (576px a 767px) */
+@media screen and (min-width: 0) and (max-width: 767px) {
+    .container .my-card .my-text {
+        opacity: 1;
+        max-height: 40px;
+        margin: 10px;
+    }
+}
+
+/* Media query per breakpoint 'md' (768px a 1400px) */
+@media screen and (min-width: 768px) and (max-width: 1400px) {
+    .container .my-card .my-text {
+        opacity: 1;
+        max-height: 40px;
+        margin: 10px;
+    }
 }
 </style>
 
