@@ -47,10 +47,15 @@ export default {
   },
 
   mounted() {
+    // Accedi al primo elemento e confronta il restaurant_id
+    if (this.items[0].restaurant_id != this.$route.params.id) {
+      this.items = [];
+      this.localStorage();
+    }
+
     this.fetchData();
   },
   created() {
-    // Carica gli elementi del carrello dal localStorage al momento della creazione del componente
     this.items = this.itemsFromLocalStorage;
   },
 };
