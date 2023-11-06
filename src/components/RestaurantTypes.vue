@@ -95,9 +95,10 @@ export default {
                     <div class="card" :data-id="type.id" @click="sendData(type)">
                         <img :src=getImg(type) class="card-img-top" alt="">
                         <div class="card-body d-flex align-items-center justify-content-center">
+                            <span class="overlay text-success" v-if="checkedType(type)"><i
+                                    class="fa-solid fa-check me-2"></i></span>
                             <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
-                        <div class="overlay" v-if="checkedType(type)">Selected</div>
                     </div>
                 </div>
             </div>
@@ -129,10 +130,10 @@ export default {
                 <div class="card" :data-id="type.id" @click="sendData(type)">
                     <img :src=getImg(type) class="card-img-top" alt="">
                     <div class="card-body d-flex align-items-center justify-content-center">
+                        <span class="overlay text-success me-2" v-if="checkedType(type)"><i class="fa-solid fa-check"></i></span>
                         <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
                 </div>
-                <div class="overlay" v-if="checkedType(type)">Selected</div>
             </div>
         </div>
     </div>
@@ -145,9 +146,9 @@ export default {
                 <div class="card" :data-id="type.id" @click="sendData(type)">
                     <img :src=getImg(type) class="card-img-top" alt="">
                     <div class="card-body d-flex align-items-center justify-content-center">
+                        <span class="overlay text-success me-2" v-if="checkedType(type)"><i class="fa-solid fa-check"></i></span>
                         <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                    <div class="overlay" v-if="checkedType(type)">Selected</div>
                 </div>
             </div>
         </div>
@@ -268,9 +269,7 @@ export default {
     }
 }
 
-@media screen { 
-    
-}
+@media screen {}
 
 /* Media query per breakpoint 'sm' (576px a 767px) */
 @media screen and (min-width: 0) and (max-width: 767px) {
