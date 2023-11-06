@@ -70,7 +70,7 @@ export default {
       <div class="col-6">
         <h1>{{ restaurant.activity_name }}</h1>
         <ul v-for="product in restaurant.products">
-          <li class="card" style="width: 18rem">
+          <li v-if="product.visible == 1" class="card" style="width: 18rem">
             <img
               :src="getImg(product)"
               class="card-img-top"
