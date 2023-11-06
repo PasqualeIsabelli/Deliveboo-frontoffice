@@ -1,58 +1,99 @@
 <script>
-
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-    components: {
+  components: {},
+  data() {
+    return {
+      items: [],
+      restaurant: [],
+    };
+  },
+  methods: {
+    fetchData() {
+      axios
+        .get("http://127.0.0.1:8000/api/restaurants/" + this.$route.params.id)
+        .then((response) => {
+          this.restaurant = response.data.restaurant;
+          console.log(this.restaurant);
+        });
+    },
+    addItem(product) {
+      this.items.push(product);
+    },
 
+    removeItem(index) {
+      this.items.splice(index, 1);
     },
-    data() {
-        return {
-            restaurant: [],
-        };
-    },
-    methods: {
-        fetchData() {
-            axios.get('http://127.0.0.1:8000/api/restaurants/' + this.$route.params.id)
-                .then((response) => {
-                    this.restaurant = response.data.restaurant;
-                    console.log(this.restaurant);
-                })
-        },
 
-        getImg(type) {
-            return `http://127.0.0.1:8000/storage/${type.img}`;
-        }
-
+    created() {
+      this.items = this.itemsFromLocalStorage;
     },
-    mounted() { 
-        this.fetchData();
+    getImg(type) {
+      return `http://127.0.0.1:8000/storage/${type.img}`;
     },
+  },
+  computed: {
+    itemsFromLocalStorage() {
+      return JSON.parse(localStorage.getItem("items") || "[]");
+    },
+  },
+  watch: {
+    items(newItems) {
+      localStorage.setItem("items", JSON.stringify(newItems));
+    },
+  },
+  mounted() {
+    this.fetchData();
+  },
 };
 </script>
 
 <template>
-
-    <div class="container">
-
-        <h3>{{ restaurant.activity_name }}</h3>
-
-        <img :src="getImg(restaurant)" alt="">
-
+  <img class="jumbo" :src="getImg(restaurant)" alt="" />
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <h1>{{ restaurant.activity_name }}</h1>
         <ul v-for="product in restaurant.products">
-        
-            <li class="card" style="width: 18rem;">
-                <img :src="getImg(product)" class="card-img-top" alt="Img prodotto">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                </div>
-            </li>
-        
+          <li class="card" style="width: 18rem">
+            <img
+              :src="getImg(product)"
+              class="card-img-top"
+              alt="Img prodotto"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">{{ product.description }}</p>
+              <button @click="addItem(product)" class="btn btn-primary me-2">
+                Add
+              </button>
+            </div>
+          </li>
         </ul>
-
+      </div>
+      <div class="col-6">
+        <div>
+          <h1>Il tuo ordine</h1>
+          <div v-for="(item, index) in items" :key="index">
+            <div class="d-flex align-items-center">
+              <h5 class="card-title">{{ item.name }}</h5>
+              <button class="btn text-danger" @click="removeItem(index)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+              <div>{{ item.price }}€</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.jumbo {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+}
+</style>
