@@ -9,42 +9,49 @@ export default {
       restaurant: [],
     };
   },
+  computed: {
+    itemsFromLocalStorage() {
+      // Recupera gli elementi dal localStorage e analizza il JSON, se presente
+      return JSON.parse(localStorage.getItem("items") || "[]");
+    },
+  },
+
   methods: {
+    localStorage() {
+      // Salva gli elementi nel localStorage
+      return localStorage.setItem("items", JSON.stringify(this.items));
+    },
     fetchData() {
+      // Effettua la chiamata API per ottenere i dati del ristorante
       axios
         .get("http://127.0.0.1:8000/api/restaurants/" + this.$route.params.id)
         .then((response) => {
           this.restaurant = response.data.restaurant;
-          console.log(this.restaurant);
         });
     },
     addItem(product) {
+      //Aggiungi un prodotto al carrello e salva nel localStorage
       this.items.push(product);
+      this.localStorage();
     },
 
     removeItem(index) {
+      // Rimuovi un prodotto dal carrello e salva nel localStorage
       this.items.splice(index, 1);
+      this.localStorage();
     },
 
-    created() {
-      this.items = this.itemsFromLocalStorage;
-    },
     getImg(type) {
       return `http://127.0.0.1:8000/storage/${type.img}`;
     },
   },
-  computed: {
-    itemsFromLocalStorage() {
-      return JSON.parse(localStorage.getItem("items") || "[]");
-    },
-  },
-  watch: {
-    items(newItems) {
-      localStorage.setItem("items", JSON.stringify(newItems));
-    },
-  },
+
   mounted() {
     this.fetchData();
+  },
+  created() {
+    // Carica gli elementi del carrello dal localStorage al momento della creazione del componente
+    this.items = this.itemsFromLocalStorage;
   },
 };
 </script>
