@@ -21,15 +21,19 @@ export default {
 <style lang="scss" scoped>
 .container-fluid {
     background-color: rgb(4, 189, 196);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
 
-    img {
-        width: 150px;
-    }
+    .nav {
 
-    a {
-        color: rgb(0, 0, 0);
-        text-decoration: none;
-        font-size: 1.2rem;
+        img {
+            width: 150px;
+        }
+
+        a {
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
     }
 }
 </style>

@@ -138,25 +138,40 @@ export default {
                 </div>
             </div>
         </div>
-
-        
-        
-
-            <div class="card" style="width: 18rem;" v-for="restaurant in this.selectedRestaurants">
-                <div class="card-body">
-                    <router-link :to="{name:'restaurants.show', params: {id: restaurant.id}}">
-                    <img :src="getImg(restaurant)" alt="">
-                    <h5 class="card-title">{{ restaurant.activity_name }}</h5>
-                    </router-link>
-                </div>
-            </div>
-
-        <div v-if="showMissingMatchMessage" >
-            <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
-        </div>
-
     </div>
 
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in this.selectedRestaurants">
+                <!-- <div class="card">
+                    <img :src="getImg(restaurant)" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
+                            <h5 class="card-title">{{ restaurant.activity_name }}</h5>
+                        </router-link>
+                    </div>
+                </div> -->
+                <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
+                    <!-- <div class="card my-card text-bg-dark">
+                        <img :src="getImg(restaurant)" class="card-img my-card-img" alt="...">
+                        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                            <h5 class="card-title text-uppercase fw-bold">{{ restaurant.activity_name }}</h5>
+                        </div>
+                    </div> -->
+                    <div class="my-card">
+                        <div class="card-details">
+                            <img :src="getImg(restaurant)" class="card-img" alt="...">
+                        </div>
+                        <div class="card-button" href="#link">{{ restaurant.activity_name }}</div>
+                    </div>
+                </router-link>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="showMissingMatchMessage">
+        <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -171,10 +186,6 @@ export default {
             height: 100px;
             object-fit: contain;
             object-position: center;
-        }
-
-        .card-img-overlay {
-            color: white;
         }
 
         h3 {
@@ -206,6 +217,79 @@ export default {
 
 .container-p-s {
     padding: 0 50px;
+}
+
+.container {
+    .my-card {
+        width: 100%;
+        border-radius: 20px;
+        background: #f5f5f5;
+        position: relative;
+        border: 2px solid #c3c6ce;
+        -webkit-transition: 0.5s ease-out;
+        transition: 0.5s ease-out;
+        overflow: visible;
+    }
+
+    .card-details {
+        color: rgb(0, 0, 0);
+        height: 100%;
+        gap: .5em;
+        display: grid;
+        place-content: center;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .card-button {
+        text-decoration: none;
+        text-align: center;
+        -webkit-transform: translate(-50%, 125%);
+        -ms-transform: translate(-50%, 125%);
+        transform: translate(-50%, 125%);
+        width: 70%;
+        border-radius: 1rem;
+        border: none;
+        background-color: rgb(0, 128, 248);
+        color: #fff;
+        font-size: 1rem;
+        padding: .5rem 1rem;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        opacity: 0;
+        -webkit-transition: 0.3s ease-out;
+        transition: 0.3s ease-out;
+        cursor: pointer;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .text-body {
+        color: rgb(134, 134, 134);
+    }
+
+    /*Text*/
+    .text-title {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    /*Hover*/
+    .my-card:hover {
+        border-color: #00f0f8;
+        -webkit-box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
+        box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
+    }
+
+    .my-card:hover .card-button {
+        -webkit-transform: translate(-50%, 50%);
+        -ms-transform: translate(-50%, 50%);
+        transform: translate(-50%, 50%);
+        opacity: 1;
+    }
+
+    .card-img {
+        overflow: hidden;
+    }
 }
 </style>
 
