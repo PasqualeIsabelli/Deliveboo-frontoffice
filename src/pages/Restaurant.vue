@@ -67,28 +67,29 @@ export default {
   <img class="jumbo" :src="getImg(restaurant)" alt="" />
   <div class="container">
     <div class="row">
-      <div class="col-6">
-        <h1>{{ restaurant.activity_name }}</h1>
-        <ul v-for="product in restaurant.products">
-          <li v-if="product.visible == 1" class="card" style="width: 18rem">
-            <img
-              :src="getImg(product)"
-              class="card-img-top"
-              alt="Img prodotto"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
-              <p class="card-text">{{ product.description }}</p>
-              <button @click="addItem(product)" class="btn btn-primary me-2">
-                Add
-              </button>
+      <div class="col-8">
+        <h2 class="p-3">{{ restaurant.activity_name }}</h2>
+        <div class="row row-cols-2 g-3">
+          <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
+            <div class="my-card">
+              <img :src="getImg(product)" class="my-card-img" alt="Img prodotto" />
+              <div class="my-text d-flex flex-column justify-content-between">
+                <h5>{{ product.name }}</h5>
+                <p>{{ product.description }}</p>
+                <div class="">
+                  <button @click="addItem(product)" class="btn btn-light me-2">
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
-      <div class="col-6">
+
+      <div class="col-4">
         <div>
-          <h1>Il tuo ordine</h1>
+          <h2 class="p-3">Il tuo carrello</h2>
           <div v-for="(item, index) in items" :key="index">
             <div class="d-flex align-items-center">
               <h5 class="card-title">{{ item.name }}</h5>
@@ -109,5 +110,39 @@ export default {
   width: 100%;
   height: 450px;
   object-fit: cover;
+}
+
+.my-card {
+  min-width: 299px;
+  max-height: 100%;
+  background-color: rgb(27, 167, 167);
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+  font-size: 16px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+
+  .my-card-img {
+    max-height: 168px;
+    min-width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+}
+
+.my-card .my-text {
+  width: 80%;
+  margin: 10px auto;
+  font-size: 15px;
+  text-align: center;
+  color: white;
+  font-weight: 200;
+  letter-spacing: 2px;
+  height: 180px;
 }
 </style>
