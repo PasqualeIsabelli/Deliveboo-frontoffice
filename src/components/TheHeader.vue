@@ -2,7 +2,9 @@
 import { router } from '../router';
 
 export default {
-    components: { router }
+    components: { 
+        router
+    }
 }
 </script>
 
@@ -10,7 +12,7 @@ export default {
     <div class="container-fluid py-4">
         <div class="container">
             <div class="nav d-flex justify-content-between align-items-center">
-                <router-link to="/"><img src="" alt=""></router-link>
+                <router-link to="/"><img src="../assets/images/Logo.png" alt=""></router-link>
                 <!-- rotta che porta al login del back-office -->
                 <a href="http://127.0.0.1:8000/login" target="_blank">Accedi</a>
             </div>
@@ -26,7 +28,7 @@ export default {
     .nav {
 
         img {
-            width: 150px;
+            height: 70px;
         }
 
         a {
