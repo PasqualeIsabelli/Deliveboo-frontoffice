@@ -4,16 +4,16 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            types: [],
-            selectedTypes: [],  // Array per i tipi selezionati
-            selectedRestaurants: []
+            types: [], // Array contenente tutti i types del DB
+            selectedTypes: [],  // Array per i types selezionati
+            selectedRestaurants: [] // Array per i restaurants selezionati
         }
     },
     methods: {
         fetchData() {
             axios.get('http://127.0.0.1:8000/api/types')
                 .then((response) => {
-                    // salviamo la lista delle tipologie dei ristoranti
+                    // Salviamo la lista delle tipologie dei ristoranti
                     this.types = response.data.results;
                     console.log(this.types);
                 })
@@ -21,35 +21,46 @@ export default {
         getImg(type) {
             return `http://127.0.0.1:8000/storage/${type.img}`;
         },
-        isSelectedType(type) {
+        // Verifichiamo se un type è stato selezionato confrontanto il suo id con gli id dei types presenti nell'array selectedTypes
+        // Se trova una corrispondenza restituirà true altrimenti false
+        checkedType(type) {
             return this.selectedTypes.some(selectedType => selectedType.id === type.id);
         },
         sendData(type) {
-            // Verifica se il tipo è già selezionato
+            // Verifichiamo se il type è già selezionato
             const index = this.selectedTypes.findIndex(selectedType => selectedType.id === type.id);
 
             if (index === -1) {
-                // Se il tipo non è già selezionato, aggiungilo
+                // Se il type non è già selezionato, lo aggiunge nell'array selectedTypes
                 this.selectedTypes.push(type);
             } else {
-                // Se il tipo è già selezionato, rimuovilo
+                // Se il type è già selezionato, lo rimuove dall'array selectedTypes
                 this.selectedTypes.splice(index, 1);
             }
 
-            // Aggiorna la lista dei ristoranti in base ai tipi selezionati
+            // Aggiorniamo la lista dei ristoranti in base ai type selezionati utilizzando l'array selectedRestaurants
+            // Verifichiamo se almeno un type è stato selezionato con la condizione: this.selectedTypes.length > 0 
+            // Filtriamo tutti i ristoranti in base al primo type selezionato con la funzione: this.selectedTypes[0].restaurants.filter
             this.selectedRestaurants = this.selectedTypes.length > 0 ? this.selectedTypes[0].restaurants.filter(restaurant => {
+                // Con la funzione every() passiamo all'array selectedTypes tutti i type selezionati uno alla volta
                 return this.selectedTypes.every(selectedType => {
+                    // Con la funzione some() verifichiamo se ogni type selezionato ha almeno un ristorante in comune con il primo ristorante in esame
                     return selectedType.restaurants.some(typeRestaurant => typeRestaurant.id === restaurant.id);
+                    // Se la condizione è vera per tutti i tipi selezionati, il ristorante viene incluso nell'array selectedRestaurant altrimenti viene escluso
                 });
             })
                 : [];
 
-            // Verifica se ci sono almeno due tipi selezionati
-            const twoOrMoreSelected = this.selectedTypes.length >= 2;
+            // Verifichiamo se almeno due types sono selezionati con la condizione: this.selectedTypes.length >= 2
+            const verifyingTypesSelected = this.selectedTypes.length >= 2;
 
-            // Se ci sono almeno due tipi selezionati, verifica la mancata corrispondenza
-            if (twoOrMoreSelected) {
+            // Verifica se ci sono almeno due types selezionati
+            if (verifyingTypesSelected) {
+                // Se ci sono, verifica le corrispondenze tra i due types
                 const missingMatch = this.selectedTypes.some(selectedType => {
+                    // Viene effettuato un doppio ciclo dove grazie alle funzioni every() e some(), si confrontano tutti i ristoranti appartenenti ai types selezionati
+                    // Se tra i ristoranti appartenenti a questi types non c'è alcuna corrispondenza, la funzione missingMatch verrà impostata su true e i ristoranti in questione verranno esclusi
+                    // Altrimenti resterà su false e verranno mostrati i ristoranti appartenenti a tutti i types selezionati
                     return this.selectedTypes.every(otherType => {
                         if (selectedType.id !== otherType.id) {
                             return !selectedType.restaurants.some(typeRestaurant => {
@@ -60,11 +71,12 @@ export default {
                     });
                 });
 
-                // Imposta la variabile di dati per mostrare o nascondere il messaggio
-                this.showMissingMatchMessage = missingMatch;
+                // Impostiamo la variabile che ci permette di mostrare o nascondere il messaggio in base al risultato ricevuto dalle corrispondenze tra i ristoranti
+                // Se non c'è alcuna corrispondenza, allora il messaggio verrà mostrato
+                this.showMessage = missingMatch;
             } else {
-                // Se ci sono meno di due tipi selezionati, nascondi il messaggio
-                this.showMissingMatchMessage = false;
+                // Altrimenti il messaggio verrà nascosto
+                this.showMessage = false;
             }
         }
     },
@@ -85,7 +97,7 @@ export default {
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
-                        <div class="overlay" v-if="isSelectedType(type)">Selected</div>
+                        <div class="overlay" v-if="checkedType(type)">Selected</div>
                     </div>
                 </div>
             </div>
@@ -134,7 +146,7 @@ export default {
                     <div class="card-body d-flex align-items-center justify-content-center">
                         <h3 class="card-text text-center">{{ type.name }}</h3>
                     </div>
-                    <div class="overlay" v-if="isSelectedType(type)">Selected</div>
+                    <div class="overlay" v-if="checkedType(type)">Selected</div>
                 </div>
             </div>
         </div>
@@ -169,7 +181,7 @@ export default {
         </div>
     </div>
 
-    <div v-if="showMissingMatchMessage">
+    <div v-if="showMessage">
         <h1 class="fw-bold text-center text-danger">Nessun ristorante trovato!</h1>
     </div>
 </template>
