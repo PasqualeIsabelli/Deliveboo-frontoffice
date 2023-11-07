@@ -104,8 +104,7 @@ export default {
                     <div class="card" :data-id="type.id" @click="sendData(type)">
                         <img :src="getImg(type)" class="card-img-top" alt="" />
                         <div class="card-body d-flex align-items-center justify-content-center">
-                            <span class="overlay text-success" v-if="checkedType(type)"><i
-                                    class="fa-solid fa-check me-2"></i></span>
+                            <span class="overlay text-success" v-if="checkedType(type)"><i class="fa-solid fa-check me-2"></i></span>
                             <h3 class="card-text text-center">{{ type.name }}</h3>
                         </div>
                     </div>
@@ -166,8 +165,7 @@ export default {
 
     <div class="container pb-5">
         <div class="row gy-5">
-            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center"
-                v-for="restaurant in this.selectedRestaurants">
+            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in this.selectedRestaurants">
                 <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
                     <!-- <div class="my-card">
                         <div class="card-details">
@@ -175,8 +173,13 @@ export default {
                         <div class="card-button" href="#link">{{ restaurant.activity_name }}</div>
                     </div> -->
                     <div class="my-card">
-                        <img :src="getImg(restaurant)" class="my-card-img" alt="..." />
+                        <img :src="getImg(restaurant)" class="my-card-img"/>
                         <div class="my-text">{{ restaurant.activity_name }}</div>
+                        <div class="type-icon">
+                            <!-- modificare con le icone dei type -->
+                            <img src="../assets/vue.svg">
+                            <!-- ******************************* -->
+                        </div>
                     </div>
                 </router-link>
             </div>
@@ -256,6 +259,10 @@ export default {
             min-width: 100%;
             object-fit: cover;
             border-radius: 10px;
+        }
+        .type-icon {
+            height: 50px;
+            width: 50px;
         }
     }
 
