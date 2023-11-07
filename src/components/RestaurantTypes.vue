@@ -4,17 +4,25 @@ import axios from "axios";
 export default {
     data() {
         return {
+            restaurants: [],
             types: [], // Array contenente tutti i types del DB
             selectedTypes: [], // Array per i types selezionati
-            selectedRestaurants: [], // Array per i restaurants selezionati
+            typestrings: [],
         };
     },
     methods: {
         fetchData() {
-            axios.get("http://127.0.0.1:8000/api/types").then((response) => {
-                // Salviamo la lista delle tipologie dei ristoranti
-                this.types = response.data.results;
-            });
+            axios
+                .get("http://127.0.0.1:8000/api/types", {
+                    params: {
+                        selectedTypes: this.selectedTypes.map((type) => type.id),
+                    }
+                })
+                .then((response) => {
+                    this.types = response.data.results;
+                    this.typestrings = response.data.typestring;
+                    this.restaurants = response.data.restaurants;
+                });
         },
         getImg(type) {
             return `http://127.0.0.1:8000/storage/${type.img}`;
@@ -27,66 +35,16 @@ export default {
             );
         },
         sendData(type) {
-            // Verifichiamo se il type è già selezionato
             const index = this.selectedTypes.findIndex(
                 (selectedType) => selectedType.id === type.id
             );
-
             if (index === -1) {
-                // Se il type non è già selezionato, lo aggiunge nell'array selectedTypes
                 this.selectedTypes.push(type);
             } else {
-                // Se il type è già selezionato, lo rimuove dall'array selectedTypes
                 this.selectedTypes.splice(index, 1);
             }
-
-            // Aggiorniamo la lista dei ristoranti in base ai type selezionati utilizzando l'array selectedRestaurants
-            // Verifichiamo se almeno un type è stato selezionato con la condizione: this.selectedTypes.length > 0
-            // Filtriamo tutti i ristoranti in base al primo type selezionato con la funzione: this.selectedTypes[0].restaurants.filter
-            this.selectedRestaurants =
-                this.selectedTypes.length > 0
-                    ? this.selectedTypes[0].restaurants.filter((restaurant) => {
-                        // Con la funzione every() passiamo all'array selectedTypes tutti i type selezionati uno alla volta
-                        return this.selectedTypes.every((selectedType) => {
-                            // Con la funzione some() verifichiamo se ogni type selezionato ha almeno un ristorante in comune con il primo ristorante in esame
-                            return selectedType.restaurants.some(
-                                (typeRestaurant) => typeRestaurant.id === restaurant.id
-                            );
-                            // Se la condizione è vera per tutti i tipi selezionati, il ristorante viene incluso nell'array selectedRestaurant altrimenti viene escluso
-                        });
-                    })
-                    : [];
-
-            // Verifichiamo se almeno due types sono selezionati con la condizione: this.selectedTypes.length >= 2
-            const verifyingTypesSelected = this.selectedTypes.length >= 2;
-
-            // Verifica se ci sono almeno due types selezionati
-            if (verifyingTypesSelected) {
-                // Se ci sono, verifica le corrispondenze tra i due types
-                const missingMatch = this.selectedTypes.some((selectedType) => {
-                    // Viene effettuato un doppio ciclo dove grazie alle funzioni every() e some(), si confrontano tutti i ristoranti appartenenti ai types selezionati
-                    // Se tra i ristoranti appartenenti a questi types non c'è alcuna corrispondenza, la funzione missingMatch verrà impostata su true e i ristoranti in questione verranno esclusi
-                    // Altrimenti resterà su false e verranno mostrati i ristoranti appartenenti a tutti i types selezionati
-                    return this.selectedTypes.every((otherType) => {
-                        if (selectedType.id !== otherType.id) {
-                            return !selectedType.restaurants.some((typeRestaurant) => {
-                                return otherType.restaurants.some(
-                                    (otherTypeRestaurant) =>
-                                        typeRestaurant.id === otherTypeRestaurant.id
-                                );
-                            });
-                        }
-                        return true;
-                    });
-                });
-
-                // Impostiamo la variabile che ci permette di mostrare o nascondere il messaggio in base al risultato ricevuto dalle corrispondenze tra i ristoranti
-                // Se non c'è alcuna corrispondenza, allora il messaggio verrà mostrato
-                this.showMessage = missingMatch;
-            } else {
-                // Altrimenti il messaggio verrà nascosto
-                this.showMessage = false;
-            }
+            // Aggiorna la lista dei ristoranti in base ai tipi selezionati
+            this.fetchData();
         },
     },
     mounted() {
@@ -94,6 +52,7 @@ export default {
     },
 };
 </script>
+
 
 <template>
     <!-- slider sm -->
@@ -163,15 +122,15 @@ export default {
         </div>
     </div>
 
-    <div class="container pb-5">
+    <!-- <div class="container pb-5">
         <div class="row gy-5">
             <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in this.selectedRestaurants">
                 <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
-                    <!-- <div class="my-card">
+                    <div class="my-card">
                         <div class="card-details">
                         </div>
                         <div class="card-button" href="#link">{{ restaurant.activity_name }}</div>
-                    </div> -->
+                    </div>
                     <div class="my-card">
                         <img :src="getImg(restaurant)" class="my-card-img"/>
                         <div class="my-text">{{ restaurant.activity_name }}</div>
@@ -184,12 +143,32 @@ export default {
                 </router-link>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div v-if="showMessage">
+    <!-- <div v-if="showMessage">
         <h1 class="fw-bold text-center text-danger p-5">
             Nessun ristorante trovato!
         </h1>
+    </div> -->
+
+
+    <div class="container">
+        <h2 class="fw-bold">Ristoranti:</h2>
+        <div v-for="restaurant in restaurants">
+            <p><span class="fw-bold">User ID:</span> {{ restaurant.user_id }}</p>
+            <p><span class="fw-bold">Email:</span> {{ restaurant.email }}</p>
+            <p><span class="fw-bold">Phone:</span> {{ restaurant.phone }}</p>
+            <p><span class="fw-bold">Activity name:</span> {{ restaurant.activity_name }}</p>
+            <span class="fw-bold">Immagine ristorante:</span> <img :src="getImg(restaurant)">
+            <p> <span class="fw-bold">Indirizzo:</span>{{ restaurant.address }}</p>
+        </div>
+        <h2 class="fw-bold">Type:</h2>
+        <div v-for="(type) in typestrings">
+            <p><span class="fw-bold">Type ID:</span> {{ type.id }}</p>
+            <p><span class="fw-bold">Nome type:</span> {{ type.name }}</p>
+            <span class="fw-bold">Immagine type</span> <img class="image" :src="getImg(type)">
+            <p><span class="fw-bold">Descrizione:</span> {{ type.description }}</p>
+        </div>
     </div>
 </template>
 
@@ -241,7 +220,7 @@ export default {
 .container {
     .my-card {
         min-width: 299px;
-        background-color: #02CCBC;
+        background-color: #02ccbc;
         border-radius: 10px;
         box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
         font-size: 16px;
@@ -285,6 +264,11 @@ export default {
         max-height: 40px;
         margin: 10px;
     }
+}
+
+.image {
+    height: 50px;
+    width: 50px;
 }
 
 @media screen {}
