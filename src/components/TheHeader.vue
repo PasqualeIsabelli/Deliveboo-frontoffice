@@ -9,12 +9,12 @@ export default {
 </script>
 
 <template>
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-2">
         <div class="container">
             <div class="nav d-flex justify-content-between align-items-center">
                 <router-link to="/"><img src="../assets/images/Logo.png" alt=""></router-link>
                 <!-- rotta che porta al login del back-office -->
-                <a href="http://127.0.0.1:8000/login" target="_blank">Accedi</a>
+                <a class="px-3" href="http://127.0.0.1:8000/login" target="_blank">Accedi</a>
             </div>
         </div>
     </div>
@@ -22,13 +22,13 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-    background-color: rgb(4, 189, 196);
+    background-color: #02CCBC;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
 
     .nav {
 
         img {
-            height: 70px;
+            width: 210px;
         }
 
         a {

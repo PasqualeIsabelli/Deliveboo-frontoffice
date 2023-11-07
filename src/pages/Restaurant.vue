@@ -68,8 +68,8 @@ export default {
   <div class="container">
     <div class="row">
       <div class="col-8">
-        <h2 class="p-3">{{ restaurant.activity_name }}</h2>
-        <div class="row row-cols-2 g-3">
+        <h2 class="py-3">{{ restaurant.activity_name }}</h2>
+        <div class="row row-cols-md-2 g-3 pb-5">
           <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
             <div class="my-card">
               <img :src="getImg(product)" class="my-card-img" alt="Img prodotto" />
@@ -89,7 +89,7 @@ export default {
 
       <div class="col-4">
         <div>
-          <h2 class="p-3">Il tuo carrello</h2>
+          <h2 class="py-3">Il tuo carrello</h2>
           <div v-for="(item, index) in items" :key="index">
             <div class="d-flex align-items-center">
               <h5 class="card-title">{{ item.name }}</h5>
@@ -113,9 +113,9 @@ export default {
 }
 
 .my-card {
-  min-width: 299px;
+  min-width: 200px;
   max-height: 100%;
-  background-color: rgb(27, 167, 167);
+  background-color: #02CCBC;
   border-radius: 10px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
   font-size: 16px;
@@ -128,7 +128,7 @@ export default {
   font-family: "Poppins", sans-serif;
 
   .my-card-img {
-    max-height: 168px;
+    max-height: 230px;
     min-width: 100%;
     object-fit: cover;
     border-radius: 10px;

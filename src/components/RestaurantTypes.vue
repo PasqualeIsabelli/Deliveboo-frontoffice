@@ -241,7 +241,7 @@ export default {
 .container {
     .my-card {
         min-width: 299px;
-        background-color: rgb(27, 167, 167);
+        background-color: #02CCBC;
         border-radius: 10px;
         box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
         font-size: 16px;
