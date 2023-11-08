@@ -64,9 +64,25 @@ export default {
     },
 
     removeItem(index) {
-      // Rimuovi un prodotto dal carrello e salva nel localStorage
-      this.items.splice(index, 1);
+      // Ottieni il prodotto corrente
+      const product = this.items[index];
 
+      // Verifica se c'è un contatore associato a questo prodotto nel carrello
+      if (this.cart[product.id]) {
+        // Decrementa il contatore per questo prodotto
+        this.cart[product.id]--;
+
+        // Se il contatore scende a 0 o sotto, rimuovi l'item dal carrello e cancella il contatore
+        if (this.cart[product.id] <= 0) {
+          this.items.splice(index, 1);
+          delete this.cart[product.id];
+        }
+      } else {
+        // Se non esiste un contatore per questo prodotto, rimuovi l'item dal carrello
+        this.items.splice(index, 1);
+      }
+
+      // Salva nel localStorage
       this.localStorage();
     },
 
@@ -102,17 +118,9 @@ export default {
       <div class="col-8">
         <h2 class="py-3">{{ restaurant.activity_name }}</h2>
         <div class="row row-cols-md-2 g-3 pb-5">
-          <div
-            class="col"
-            v-for="product in restaurant.products"
-            v-show="product.visible == 1"
-          >
+          <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
             <div class="my-card">
-              <img
-                :src="getImg(product)"
-                class="my-card-img"
-                alt="Img prodotto"
-              />
+              <img :src="getImg(product)" class="my-card-img" alt="Img prodotto" />
               <div class="my-text d-flex flex-column justify-content-between">
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
@@ -142,10 +150,7 @@ export default {
                   </td>
                   <td class="text-center">{{ item.price }}€</td>
                   <td>
-                    <button
-                      class="btn text-danger p-0"
-                      @click="removeItem(index)"
-                    >
+                    <button class="btn text-danger p-0" @click="removeItem(index)">
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   </td>
