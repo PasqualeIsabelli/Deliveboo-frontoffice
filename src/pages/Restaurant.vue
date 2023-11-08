@@ -8,7 +8,9 @@ export default {
     return {
       items: [],
       restaurant: [],
+      totalPrice: [],
       cart: {},
+      sum: 0,
     };
   },
 
@@ -58,7 +60,13 @@ export default {
         // Inizializza un contatore a 1 nell'oggetto cart per questo nuovo prodotto nel carrello
         this.cart[product.id] = 1;
       }
-
+      //array contenente i prezzi
+      this.totalPrice.push(product.price);
+      for (let i = 0; i < this.totalPrice.length; i++) {
+        this.sum += parseFloat(this.totalPrice[i]);
+        console.log(this.totalPrice);
+        console.log(this.sum);
+      }
       // Salva nel localStorage
       this.localStorage();
     },
@@ -132,6 +140,8 @@ export default {
               <div class="my-text d-flex flex-column justify-content-between">
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
+                <div class="text-">{{ product.price }}</div>
+
                 <div class="">
                   <button @click="addItem(product)" class="btn btn-light me-2">
                     +
@@ -169,6 +179,7 @@ export default {
               </tbody>
             </table>
           </div>
+          <div class="text-end">Totale: {{ sum.toFixed(2) }}€</div>
           <router-link :to="{ name: 'cart' }">
             <button class="btn btn-primary">Vai al carrello</button>
           </router-link>
