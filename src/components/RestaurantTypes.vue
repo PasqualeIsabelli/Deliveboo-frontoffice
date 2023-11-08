@@ -4,10 +4,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      restaurants: [],
+      restaurants: [], // Array contenente tutti i restaurants del DB
       types: [], // Array contenente tutti i types del DB
       selectedTypes: [], // Array per i types selezionati
-      typestrings: [],
+      typestrings: [], // Array contenente le icone dei types
+      showMessage: false, // Messaggio di mancata corrispondenza
     };
   },
   methods: {
@@ -15,15 +16,23 @@ export default {
       axios
         .get("http://127.0.0.1:8000/api/types", {
           params: {
+            // Estrai gli id da ciascun type dell'array selectedTypes e li utilizza per effettuare le chiamate
             selectedTypes: this.selectedTypes.map((type) => type.id),
           },
         })
         .then((response) => {
+          // Prende i dati relativi ai types e li mette nella variabile this.types
           this.types = response.data.results;
+          // Prende le icone dei types e li mette nella variabile this.typestring
           this.typestrings = response.data.typestring;
+          // Prende i dati relativi ai restaurants e li mette nella variabile this.restaurants
           this.restaurants = response.data.restaurants;
+
+          // Imposta showMessage a true se non ci sono ristoranti corrispondenti
+          this.showMessage = this.selectedTypes.length > 0 && this.restaurants.length === 0;
         });
     },
+    // getImg ci dà la possibilità di visualizzare le immagini del DB
     getImg(type) {
       return `http://127.0.0.1:8000/storage/${type.img}`;
     },
@@ -56,44 +65,24 @@ export default {
 <template>
   <!-- slider sm -->
   <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
-    <div
-      id="carouselExampleAutoplaying"
-      class="carousel slide d-block d-md-none d-lg-none"
-      data-bs-ride="carousel"
-    >
+    <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div
-          class="carousel-item active"
-          v-for="(type, id) in types"
-          :key="type.id"
-        >
+        <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
           <div class="card" :data-id="type.id" @click="sendData(type)">
             <img :src="getImg(type)" class="card-img-top" alt="" />
-            <div
-              class="card-body d-flex align-items-center justify-content-center"
-            >
-              <span class="overlay text-success" v-if="checkedType(type)"
-                ><i class="fa-solid fa-check me-2"></i
-              ></span>
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <span class="overlay text-success" v-if="checkedType(type)"><i class="fa-solid fa-check me-2"></i></span>
               <h3 class="card-text text-center">{{ type.name }}</h3>
             </div>
           </div>
         </div>
       </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="prev"
-      >
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="prev">
         <span><i class="fa-solid fa-chevron-left"></i></span>
       </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="next"
-      >
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="next">
         <span><i class="fa-solid fa-chevron-right"></i></span>
       </button>
     </div>
@@ -115,12 +104,8 @@ export default {
       <div class="col-3" v-for="(type, i) in types">
         <div class="card" :data-id="type.id" @click="sendData(type)">
           <img :src="getImg(type)" class="card-img-top" alt="" />
-          <div
-            class="card-body d-flex align-items-center justify-content-center"
-          >
-            <span class="overlay text-success me-2" v-if="checkedType(type)"
-              ><i class="fa-solid fa-check"></i
-            ></span>
+          <div class="card-body d-flex align-items-center justify-content-center">
+            <span class="overlay text-success me-2" v-if="checkedType(type)"><i class="fa-solid fa-check"></i></span>
             <h3 class="card-text text-center">{{ type.name }}</h3>
           </div>
         </div>
@@ -130,18 +115,12 @@ export default {
 
   <!-- card in lg -->
   <div class="container-fluid">
-    <div
-      class="container d-none d-md-none d-lg-flex py-5 gap-5 justify-content-center"
-    >
+    <div class="container d-none d-md-none d-lg-flex py-5 gap-5 justify-content-center">
       <div v-for="(type, id) in types" :key="type.id">
         <div class="card" :data-id="type.id" @click="sendData(type)">
           <img :src="getImg(type)" class="card-img-top" alt="" />
-          <div
-            class="card-body d-flex align-items-center justify-content-center"
-          >
-            <span class="overlay text-success me-2" v-if="checkedType(type)"
-              ><i class="fa-solid fa-check"></i
-            ></span>
+          <div class="card-body d-flex align-items-center justify-content-center">
+            <span class="overlay text-success me-2" v-if="checkedType(type)"><i class="fa-solid fa-check"></i></span>
             <h3 class="card-text text-center">{{ type.name }}</h3>
           </div>
         </div>
@@ -149,56 +128,23 @@ export default {
     </div>
   </div>
 
-  <!-- <div class="container pb-5">
-        <div class="row gy-5">
-            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in this.selectedRestaurants">
-                <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
-                    <div class="my-card">
-                        <div class="card-details">
-                        </div>
-                        <div class="card-button" href="#link">{{ restaurant.activity_name }}</div>
-                    </div>
-                    <div class="my-card">
-                        <img :src="getImg(restaurant)" class="my-card-img"/>
-                        <div class="my-text">{{ restaurant.activity_name }}</div>
-                        <div class="type-icon">
-                            modificare con le icone dei type
-                            <img src="../assets/vue.svg">
-                            *******************************
-                        </div>
-                    </div>
-                </router-link>
+  <div class="container pb-5">
+    <div class="row gy-5">
+      <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in restaurants">
+        <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
+          <div class="my-card">
+            <img :src="getImg(restaurant)" class="my-card-img" />
+            <div class="my-text">{{ restaurant.activity_name }}
+              <div class="type-icon" v-for="(type) in typestrings">
+                <img class="image" :src="getImg(type)" /> <!--INSERIRE DELLE ICON? OPPURE FARE DEI BADGE? VEDERE COME FARE PER ASSEGNARE DIRETTAMENTE TUTTE LE ICON DI APPARTENENZA DI QUEL RISTORANTE-->
+              </div>
             </div>
-        </div>
-    </div> -->
-
-  <!-- <div v-if="showMessage">
-        <h1 class="fw-bold text-center text-danger p-5">
-            Nessun ristorante trovato!
-        </h1>
-    </div> -->
-
-  <div class="container">
-    <h2 class="fw-bold">Ristoranti:</h2>
-    <div v-for="restaurant in restaurants">
-      <p><span class="fw-bold">User ID:</span> {{ restaurant.user_id }}</p>
-      <p><span class="fw-bold">Email:</span> {{ restaurant.email }}</p>
-      <p><span class="fw-bold">Phone:</span> {{ restaurant.phone }}</p>
-      <p>
-        <span class="fw-bold">Activity name:</span>
-        {{ restaurant.activity_name }}
-      </p>
-      <span class="fw-bold">Immagine ristorante:</span>
-      <img :src="getImg(restaurant)" />
-      <p><span class="fw-bold">Indirizzo:</span>{{ restaurant.address }}</p>
+          </div>
+        </router-link>
+      </div>
     </div>
-    <h2 class="fw-bold">Type:</h2>
-    <div v-for="type in typestrings">
-      <p><span class="fw-bold">Type ID:</span> {{ type.id }}</p>
-      <p><span class="fw-bold">Nome type:</span> {{ type.name }}</p>
-      <span class="fw-bold">Immagine type</span>
-      <img class="image" :src="getImg(type)" />
-      <p><span class="fw-bold">Descrizione:</span> {{ type.description }}</p>
+    <div v-if="showMessage && restaurants.length === 0">
+      <h1 class="fw-bold text-center text-danger p-5">Nessun ristorante trovato!</h1>
     </div>
   </div>
 </template>
@@ -270,6 +216,7 @@ export default {
       object-fit: cover;
       border-radius: 10px;
     }
+
     .type-icon {
       height: 50px;
       width: 50px;
@@ -298,12 +245,11 @@ export default {
 }
 
 .image {
-  height: 50px;
-  width: 50px;
+  height: 25px;
+  width: 25px;
 }
 
-@media screen {
-}
+@media screen {}
 
 /* Media query per breakpoint 'sm' (576px a 767px) */
 @media screen and (min-width: 0) and (max-width: 767px) {
