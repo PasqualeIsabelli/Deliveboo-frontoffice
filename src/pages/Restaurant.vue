@@ -150,6 +150,7 @@ export default {
         </div>
       </div>
 
+      <!-- salvatore dai -->
       <div class="col-4">
         <div v-if="items.length > 0">
           <h2 class="py-3">Il tuo carrello</h2>
