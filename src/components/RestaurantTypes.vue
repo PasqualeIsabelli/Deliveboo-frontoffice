@@ -43,10 +43,13 @@ export default {
                 (selectedType) => selectedType.id === type.id
             );
         },
+        // sendData gestisce la selezione e deselezione dei types
         sendData(type) {
+            // Attraverso il findIndex, cerca l'oggetto type all'interno dell'array selectedType e lo assegna alla variabile index
             const index = this.selectedTypes.findIndex(
                 (selectedType) => selectedType.id === type.id
             );
+            // Se l'oggetto non è presente all'interno dell'array allora lo aggiunge con push altrimenti lo rimuove con splice 
             if (index === -1) {
                 this.selectedTypes.push(type);
             } else {
