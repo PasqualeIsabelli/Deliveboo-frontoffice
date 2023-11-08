@@ -55,8 +55,8 @@ export default {
 
 <style lang="scss" scoped>
 
-// .hidden {
-//     display: none;
-// }
+.hidden {
+    display: none;
+}
 
 </style>
