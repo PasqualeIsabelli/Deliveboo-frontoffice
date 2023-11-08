@@ -3,6 +3,7 @@ import {createRouter, createWebHistory} from "vue-router"
 //import delle pagine
 import Home from "./pages/Home.vue"
 import Restaurant from "./pages/Restaurant.vue"
+import Cart from "./pages/Cart.vue"
 
 // rotte
 const routes = [
@@ -15,6 +16,11 @@ const routes = [
         path: "/restaurants/:id", //Uri to write in browser's searchbar
         name: "restaurants.show", //Name of route for creating links
         component: Restaurant //Component to return page's html
+    },
+    {
+        path: '/cart', // uri da scrivere nel browser
+        name: 'cart', // nome della rotta da usare per creare un link
+        component: Cart, // componente che ritorna l'html della pagina
     }
 ]
 
