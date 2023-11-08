@@ -61,12 +61,8 @@ export default {
         this.cart[product.id] = 1;
       }
       //array contenente i prezzi
-      this.totalPrice.push(product.price);
-      for (let i = 0; i < this.totalPrice.length; i++) {
-        this.sum += parseFloat(this.totalPrice[i]);
-        console.log(this.totalPrice);
-        console.log(this.sum);
-      }
+      this.sum += parseFloat(product.price);
+
       // Salva nel localStorage
       this.localStorage();
     },
@@ -89,6 +85,7 @@ export default {
         // Se non esiste un contatore per questo prodotto, rimuovi l'item dal carrello
         this.items.splice(index, 1);
       }
+      this.sum -= parseFloat(product.price);
 
       // Salva nel localStorage
       this.localStorage();
