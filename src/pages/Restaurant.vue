@@ -87,7 +87,7 @@ export default {
   created() {
 
     this.items = this.itemsFromLocalStorage;
-    
+
   },
 };
 </script>
@@ -117,7 +117,7 @@ export default {
       </div>
 
       <div class="col-4">
-        <div>
+        <div v-if="(items.length > 0)">
           <h2 class="py-3">Il tuo carrello</h2>
           <div v-for="(item, index) in items" :key="index">
             <div class="d-flex align-items-center">
@@ -128,6 +128,9 @@ export default {
               <div>{{ item.price }}€</div>
             </div>
           </div>
+          <router-link :to="{ name: 'cart'}">
+            <button class="btn btn-primary">Vai al carrello</button>
+          </router-link>
         </div>
       </div>
     </div>
