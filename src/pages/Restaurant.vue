@@ -23,8 +23,15 @@ export default {
 
   methods: {
     localStorage() {
+      const dataToSave = {
+        items: this.items,
+        sum: this.sum,
+        totalPrice: this.totalPrice,
+        cart: this.cart
+      };
+
       // Salva gli elementi nel localStorage
-      return localStorage.setItem("items", JSON.stringify(this.items));
+      localStorage.setItem("cartData", JSON.stringify(dataToSave));
     },
     fetchData() {
       // Effettua la chiamata API per ottenere i dati del ristorante
@@ -102,6 +109,9 @@ export default {
       // Accedi al primo elemento e confronta il restaurant_id
       if (this.items[0].restaurant_id != this.$route.params.id) {
         this.items = [];
+        this.sum = 0;
+        this.cart = [];
+        this.totalPrice = [];
 
         this.localStorage();
       }
@@ -111,7 +121,11 @@ export default {
   },
 
   created() {
-    this.items = this.itemsFromLocalStorage;
+    const storedData = JSON.parse(localStorage.getItem("cartData") || "{}");
+    this.items = storedData.items || [];
+    this.sum = storedData.sum || 0;
+    this.totalPrice = storedData.totalPrice || 0;
+    this.cart = storedData.cart || {};
   },
 };
 </script>
@@ -123,17 +137,9 @@ export default {
       <div class="col-8">
         <h2 class="py-3">{{ restaurant.activity_name }}</h2>
         <div class="row row-cols-md-2 g-3 pb-5">
-          <div
-            class="col"
-            v-for="product in restaurant.products"
-            v-show="product.visible == 1"
-          >
+          <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
             <div class="my-card">
-              <img
-                :src="getImg(product)"
-                class="my-card-img"
-                alt="Img prodotto"
-              />
+              <img :src="getImg(product)" class="my-card-img" alt="Img prodotto" />
               <div class="my-text d-flex flex-column justify-content-between">
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
@@ -164,20 +170,25 @@ export default {
                   <td>
                     <h5 class="card-title">{{ item.name }}</h5>
                   </td>
-                  <td class="text-center">{{ item.price * cart[item.id] }}€</td>
+                  <td class="text-center">{{ (item.price * cart[item.id]).toFixed(2) }}€</td>
                   <td>
-                    <button
-                      class="btn text-danger p-0"
-                      @click="removeItem(index)"
-                    >
+                    <button class="btn text-danger p-0" @click="removeItem(index)">
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   </td>
                 </tr>
               </tbody>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td>
+                    <h5>Totale:</h5>
+                  </td>
+                  <td class="text-center">{{ sum.toFixed(2) }}€</td>
+                </tr>
+              </tbody>
             </table>
           </div>
-          <div class="text-end">Totale: {{ sum.toFixed(2) }}€</div>
           <router-link :to="{ name: 'cart' }">
             <button class="btn btn-primary">Vai al carrello</button>
           </router-link>
