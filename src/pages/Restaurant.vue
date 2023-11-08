@@ -118,9 +118,17 @@ export default {
       <div class="col-8">
         <h2 class="py-3">{{ restaurant.activity_name }}</h2>
         <div class="row row-cols-md-2 g-3 pb-5">
-          <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
+          <div
+            class="col"
+            v-for="product in restaurant.products"
+            v-show="product.visible == 1"
+          >
             <div class="my-card">
-              <img :src="getImg(product)" class="my-card-img" alt="Img prodotto" />
+              <img
+                :src="getImg(product)"
+                class="my-card-img"
+                alt="Img prodotto"
+              />
               <div class="my-text d-flex flex-column justify-content-between">
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
@@ -148,9 +156,12 @@ export default {
                   <td>
                     <h5 class="card-title">{{ item.name }}</h5>
                   </td>
-                  <td class="text-center">{{ item.price }}€</td>
+                  <td class="text-center">{{ item.price * cart[item.id] }}€</td>
                   <td>
-                    <button class="btn text-danger p-0" @click="removeItem(index)">
+                    <button
+                      class="btn text-danger p-0"
+                      @click="removeItem(index)"
+                    >
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   </td>
