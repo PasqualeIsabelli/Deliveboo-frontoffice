@@ -1,49 +1,69 @@
 <script>
+
 import axios from "axios";
 
 export default {
+
   components: {},
+
   data() {
+
     return {
+
       items: [],
       restaurant: [],
+
     };
+
   },
+
   computed: {
+
     itemsFromLocalStorage() {
       // Recupera gli elementi dal localStorage e analizza il JSON, se presente
       return JSON.parse(localStorage.getItem("items") || "[]");
     },
+
   },
 
   methods: {
+
     localStorage() {
       // Salva gli elementi nel localStorage
       return localStorage.setItem("items", JSON.stringify(this.items));
+
     },
     fetchData() {
       // Effettua la chiamata API per ottenere i dati del ristorante
-      axios
-        .get("http://127.0.0.1:8000/api/restaurants/" + this.$route.params.id)
+      axios.get("http://127.0.0.1:8000/api/restaurants/" + this.$route.params.id)
         .then((response) => {
           this.restaurant = response.data.restaurant;
         });
+
     },
+
     addItem(product) {
       //Aggiungi un prodotto al carrello e salva nel localStorage
       this.items.push(product);
+
       this.localStorage();
+
     },
 
     removeItem(index) {
       // Rimuovi un prodotto dal carrello e salva nel localStorage
       this.items.splice(index, 1);
+
       this.localStorage();
+
     },
 
     getImg(type) {
+
       return `http://127.0.0.1:8000/storage/${type.img}`;
+
     },
+
   },
 
   mounted() {
@@ -51,14 +71,23 @@ export default {
     if (this.items.length > 0) {
       // Accedi al primo elemento e confronta il restaurant_id
       if (this.items[0].restaurant_id != this.$route.params.id) {
+
         this.items = [];
+
         this.localStorage();
+
       }
+
     }
+
     this.fetchData();
+
   },
+
   created() {
+
     this.items = this.itemsFromLocalStorage;
+
   },
 };
 </script>
@@ -88,7 +117,7 @@ export default {
       </div>
 
       <div class="col-4">
-        <div>
+        <div v-if="(items.length > 0)">
           <h2 class="py-3">Il tuo carrello</h2>
           <div v-for="(item, index) in items" :key="index">
             <div class="d-flex align-items-center">
@@ -99,6 +128,9 @@ export default {
               <div>{{ item.price }}€</div>
             </div>
           </div>
+          <router-link :to="{ name: 'cart'}">
+            <button class="btn btn-primary">Vai al carrello</button>
+          </router-link>
         </div>
       </div>
     </div>
