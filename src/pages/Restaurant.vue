@@ -1,69 +1,106 @@
 <script>
-
 import axios from "axios";
 
 export default {
-
   components: {},
 
   data() {
-
     return {
-
       items: [],
       restaurant: [],
-
+      totalPrice: [],
+      cart: {},
+      sum: 0,
     };
-
   },
 
   computed: {
-
     itemsFromLocalStorage() {
       // Recupera gli elementi dal localStorage e analizza il JSON, se presente
       return JSON.parse(localStorage.getItem("items") || "[]");
     },
-
   },
 
   methods: {
-
     localStorage() {
-      // Salva gli elementi nel localStorage
-      return localStorage.setItem("items", JSON.stringify(this.items));
+      const dataToSave = {
+        items: this.items,
+        sum: this.sum,
+        totalPrice: this.totalPrice,
+        cart: this.cart
+      };
 
+      // Salva gli elementi nel localStorage
+      localStorage.setItem("cartData", JSON.stringify(dataToSave));
     },
     fetchData() {
       // Effettua la chiamata API per ottenere i dati del ristorante
-      axios.get("http://127.0.0.1:8000/api/restaurants/" + this.$route.params.id)
+      axios
+        .get("http://127.0.0.1:8000/api/restaurants/" + this.$route.params.id)
         .then((response) => {
           this.restaurant = response.data.restaurant;
         });
-
     },
-
+    // Questo è il metodo che gestisce l'aggiunta di un prodotto al carrello
     addItem(product) {
-      //Aggiungi un prodotto al carrello e salva nel localStorage
-      this.items.push(product);
+      // Trova l'indice del prodotto nel carrello se esiste
+      const existingProductIndex = this.items.findIndex(
+        (item) => item.id === product.id
+      );
 
+      // Verifica se il prodotto esiste già nel carrello
+      if (existingProductIndex !== -1) {
+        // Se il prodotto esiste già, ottieni il prodotto esistente
+        const existingProduct = this.items[existingProductIndex];
+
+        // Verifica se c'è già un contatore associato a questo prodotto nel carrello
+        if (this.cart[existingProduct.id]) {
+          // Se sì, incrementa il contatore per questo prodotto
+          this.cart[existingProduct.id]++;
+        } else {
+          // Se non esiste un contatore per questo prodotto, inizializza il contatore a 1
+          this.cart[existingProduct.id] = 1;
+        }
+      } else {
+        // Se il prodotto non esiste ancora nel carrello, aggiungi il prodotto all'array items
+        this.items.push(product);
+        // Inizializza un contatore a 1 nell'oggetto cart per questo nuovo prodotto nel carrello
+        this.cart[product.id] = 1;
+      }
+      //array contenente i prezzi
+      this.sum += parseFloat(product.price);
+
+      // Salva nel localStorage
       this.localStorage();
-
     },
 
     removeItem(index) {
-      // Rimuovi un prodotto dal carrello e salva nel localStorage
-      this.items.splice(index, 1);
+      // Ottieni il prodotto corrente
+      const product = this.items[index];
 
+      // Verifica se c'è un contatore associato a questo prodotto nel carrello
+      if (this.cart[product.id]) {
+        // Decrementa il contatore per questo prodotto
+        this.cart[product.id]--;
+
+        // Se il contatore scende a 0 o sotto, rimuovi l'item dal carrello e cancella il contatore
+        if (this.cart[product.id] <= 0) {
+          this.items.splice(index, 1);
+          delete this.cart[product.id];
+        }
+      } else {
+        // Se non esiste un contatore per questo prodotto, rimuovi l'item dal carrello
+        this.items.splice(index, 1);
+      }
+      this.sum -= parseFloat(product.price);
+
+      // Salva nel localStorage
       this.localStorage();
-
     },
 
     getImg(type) {
-
       return `http://127.0.0.1:8000/storage/${type.img}`;
-
     },
-
   },
 
   mounted() {
@@ -71,23 +108,24 @@ export default {
     if (this.items.length > 0) {
       // Accedi al primo elemento e confronta il restaurant_id
       if (this.items[0].restaurant_id != this.$route.params.id) {
-
         this.items = [];
+        this.sum = 0;
+        this.cart = [];
+        this.totalPrice = [];
 
         this.localStorage();
-
       }
-
     }
 
     this.fetchData();
-
   },
 
   created() {
-
-    this.items = this.itemsFromLocalStorage;
-
+    const storedData = JSON.parse(localStorage.getItem("cartData") || "{}");
+    this.items = storedData.items || [];
+    this.sum = storedData.sum || 0;
+    this.totalPrice = storedData.totalPrice || 0;
+    this.cart = storedData.cart || {};
   },
 };
 </script>
@@ -105,6 +143,8 @@ export default {
               <div class="my-text d-flex flex-column justify-content-between">
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
+                <div class="text-">{{ product.price }}</div>
+
                 <div class="">
                   <button @click="addItem(product)" class="btn btn-light me-2">
                     +
@@ -116,19 +156,40 @@ export default {
         </div>
       </div>
 
+      <!-- salvatore dai -->
       <div class="col-4">
-        <div v-if="(items.length > 0)">
+        <div v-if="items.length > 0">
           <h2 class="py-3">Il tuo carrello</h2>
-          <div v-for="(item, index) in items" :key="index">
-            <div class="d-flex align-items-center">
-              <h5 class="card-title">{{ item.name }}</h5>
-              <button class="btn text-danger" @click="removeItem(index)">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-              <div>{{ item.price }}€</div>
-            </div>
+          <div class="my-table-container p-3">
+            <table class="table table-borderless m-0">
+              <tbody v-for="(item, index) in items" :key="index">
+                <tr>
+                  <td class="text-center">
+                    {{ cart[item.id] }}
+                  </td>
+                  <td>
+                    <h5 class="card-title">{{ item.name }}</h5>
+                  </td>
+                  <td class="text-center">{{ (item.price * cart[item.id]).toFixed(2) }}€</td>
+                  <td>
+                    <button class="btn text-danger p-0" @click="removeItem(index)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td>
+                    <h5>Totale:</h5>
+                  </td>
+                  <td class="text-center">{{ sum.toFixed(2) }}€</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <router-link :to="{ name: 'cart'}">
+          <router-link :to="{ name: 'cart' }">
             <button class="btn btn-primary">Vai al carrello</button>
           </router-link>
         </div>
@@ -147,7 +208,7 @@ export default {
 .my-card {
   min-width: 200px;
   max-height: 100%;
-  background-color: #02CCBC;
+  background-color: #02ccbc;
   border-radius: 10px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
   font-size: 16px;
@@ -176,5 +237,10 @@ export default {
   font-weight: 200;
   letter-spacing: 2px;
   height: 180px;
+}
+
+.my-table-container {
+  border: 1px solid lightgrey;
+  border-radius: 10px;
 }
 </style>
