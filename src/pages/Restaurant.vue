@@ -11,6 +11,7 @@ export default {
       totalPrice: [],
       cart: {},
       sum: 0,
+      confDeleteCart: false,
     };
   },
 
@@ -33,6 +34,16 @@ export default {
       // Salva gli elementi nel localStorage
       localStorage.setItem("cartData", JSON.stringify(dataToSave));
     },
+    removeAllItem(index) {
+      // Rimuovi tutti gli elementi dal carrello reimpostando gli array e il totale
+      this.items = [];
+      this.totalPrice = [];
+      this.sum = 0;
+      this.cart = {};
+
+      // Salva nel localStorage
+      this.localStorage();
+    },
     fetchData() {
       // Effettua la chiamata API per ottenere i dati del ristorante
       axios
@@ -43,6 +54,21 @@ export default {
     },
     // Questo è il metodo che gestisce l'aggiunta di un prodotto al carrello
     addItem(product) {
+
+      //se l'array items ha almeno un elemento allora esegui l'altro if
+      if (this.items.length > 0) {
+        // Accedi al primo elemento e confronta il restaurant_id
+        if (this.items[0].restaurant_id != this.$route.params.id) {
+          this.confDeleteCart = true;
+          this.items = [];
+          this.sum = 0;
+          this.cart = [];
+          this.totalPrice = [];
+
+          this.localStorage();
+        }
+      }
+
       // Trova l'indice del prodotto nel carrello se esiste
       const existingProductIndex = this.items.findIndex(
         (item) => item.id === product.id
@@ -67,6 +93,7 @@ export default {
         // Inizializza un contatore a 1 nell'oggetto cart per questo nuovo prodotto nel carrello
         this.cart[product.id] = 1;
       }
+
       //array contenente i prezzi
       this.sum += parseFloat(product.price);
 
@@ -104,19 +131,6 @@ export default {
   },
 
   mounted() {
-    //se l'array items ha almeno un elemento allora esegui l'altro if
-    if (this.items.length > 0) {
-      // Accedi al primo elemento e confronta il restaurant_id
-      if (this.items[0].restaurant_id != this.$route.params.id) {
-        this.items = [];
-        this.sum = 0;
-        this.cart = [];
-        this.totalPrice = [];
-
-        this.localStorage();
-      }
-    }
-
     this.fetchData();
   },
 
@@ -156,7 +170,6 @@ export default {
         </div>
       </div>
 
-      <!-- salvatore dai -->
       <div class="col-4">
         <div v-if="items.length > 0">
           <h2 class="py-3">Il tuo carrello</h2>
@@ -170,10 +183,15 @@ export default {
                   <td>
                     <h5 class="card-title">{{ item.name }}</h5>
                   </td>
+                  <td class="text-end">
+                    <button class="btn text-danger p-0" @click="removeItem(index)">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                  </td>
                   <td class="text-center">{{ (item.price * cart[item.id]).toFixed(2) }}€</td>
                   <td>
-                    <button class="btn text-danger p-0" @click="removeItem(index)">
-                      <i class="fa-solid fa-trash"></i>
+                    <button class="btn text-danger p-0" @click="addItem(item)">
+                      <i class="fa-solid fa-plus"></i>
                     </button>
                   </td>
                 </tr>
@@ -184,14 +202,22 @@ export default {
                   <td>
                     <h5>Totale:</h5>
                   </td>
+                  <td></td>
                   <td class="text-center">{{ sum.toFixed(2) }}€</td>
+                  <td>
+                    <button class="btn text-danger p-0 text-center" @click="removeAllItem(index)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <router-link :to="{ name: 'cart' }">
-            <button class="btn btn-primary">Vai al carrello</button>
-          </router-link>
+          <div class="my-2">
+            <router-link :to="{ name: 'cart' }">
+              <button class="btn btn-primary">Vai al carrello</button>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
