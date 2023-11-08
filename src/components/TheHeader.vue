@@ -22,8 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-    background-color: #02CCBC;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
+
 
     .nav {
 
