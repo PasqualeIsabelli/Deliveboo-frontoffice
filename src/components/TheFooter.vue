@@ -30,13 +30,13 @@ export default {
 </script>
 
 <template>
-  <div class="container-fluid d-flex justify-content-center py-5">
+  <div class="container-fluid d-flex justify-content-center py-2">
     <div class="logo-container">
       <img style="width: 300px;" src="../assets/images/logo.png">
     </div>
     <div class="ul-container">
       <div class="d-flex justify-content-center gap-5">
-        <ul v-for="singleCredit in creditsList">
+        <ul class="m-0" v-for="singleCredit in creditsList">
           <h4 class="fw-bold">{{ singleCredit.title }}</h4>
           <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled"><a class="nav-link" href="#0">{{
             singleLink }}</a></li>

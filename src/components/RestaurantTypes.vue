@@ -11,7 +11,17 @@ export default {
             showMessage: false, // Messaggio di mancata corrispondenza
         };
     },
+
+    computed: {
+        itemsFromLocalStorage() {
+            // Recupera gli elementi dal localStorage e analizza il JSON, se presente
+            return JSON.parse(localStorage.getItem("selectedTypes") || "[]");
+        },
+    },
     methods: {
+        localStorage() {
+            localStorage.setItem("selectedTypes", JSON.stringify(this.selectedTypes));
+        },
         fetchData() {
             axios
                 .get("http://127.0.0.1:8000/api/types", {
@@ -55,11 +65,15 @@ export default {
             } else {
                 this.selectedTypes.splice(index, 1);
             }
+            this.localStorage();
+
             // Aggiorna la lista dei ristoranti in base ai tipi selezionati
             this.fetchData();
         },
     },
     mounted() {
+        // Se ci sono tipi selezionati nel localStorage, assegnali all'array selectedTypes
+        this.selectedTypes = this.itemsFromLocalStorage;
         this.fetchData();
     },
 };
