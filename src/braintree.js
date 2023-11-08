@@ -1,3 +1,5 @@
+// import paymentSuccess from '/src/pages/Cart.vue';
+
 var button = document.querySelector('#submit-button');
 var $errBox = $('#error-box');
 var $successBox = $('#success-box');
@@ -40,10 +42,12 @@ braintree.dropin.create({
     
         instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
             if (requestPaymentMethodErr) {
+                // paymentSuccess = false;
                 displayMessage($errBox, requestPaymentMethodErr.message);
                 return;
             }
 
+            // paymentSuccess = true;
             displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
         });
     });

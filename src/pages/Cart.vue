@@ -7,20 +7,11 @@ export default {
             button : document.querySelector('#submit-button'),
             $errBox : ('#error-box'),
             $successBox : ('#success-box'),
+            // paymentSucces : false,
         }
     },
 
     methods : {
-
-        displayMessage(box, message) {
-            box.html(message);
-            box.removeClass('hidden');
-        },
-
-        clearMessage(box) {
-            box.html('');
-            box.addClass('hidden');
-        },
 
     },
 
@@ -49,7 +40,7 @@ export default {
 
     <div class="container main">
         <div class="page-header">
-            <h1>Drop-in Bootstrap Example</h1>
+            <h1>Braintree Example</h1>
         </div>
 
         <div id="error-box" class="alert alert-danger hidden" role="alert"></div>
@@ -63,5 +54,9 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+// .hidden {
+//     display: none;
+// }
 
 </style>
