@@ -7,12 +7,20 @@ export default {
             button : document.querySelector('#submit-button'),
             $errBox : ('#error-box'),
             $successBox : ('#success-box'),
+
+            // braintreeContainer : document.getElementById('dropin-container'),
             // paymentSucces : false,
         }
     },
 
     methods : {
-
+        // checkElement(element) {
+        //     if (!this.braintreeContainer.textContent.trim() !== '') {
+        //         setTimeout(() => {
+        //             location.reload()
+        //         }, 500);
+        //     }
+        // }
     },
 
     mounted() {
@@ -27,7 +35,9 @@ export default {
 
         let braintreeScript = document.createElement('script')
         braintreeScript.setAttribute('src', '/src/braintree.js')
-        document.head.appendChild(braintreeScript)
+        setTimeout(() => {
+            document.head.appendChild(braintreeScript)
+            }, 500);
 
     },
 
