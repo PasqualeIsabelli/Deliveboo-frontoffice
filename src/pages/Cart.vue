@@ -106,24 +106,53 @@ export default {
   <div class="container pt-5">
     <div class="row">
       <div class="container main col-6">
-        <div class="page-header"></div>
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Nome</label>
+            <input type="email" class="form-control" id="inputEmail4" />
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Cognome</label>
+            <input type="password" class="form-control" id="inputPassword4" />
+          </div>
+          <div class="col-12">
+            <label for="inputEmail4" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail4" />
+          </div>
+          <div class="col-12">
+            <label for="inputAddress" class="form-label"
+              >Numero di cellulare</label
+            >
+            <input type="text" class="form-control" id="inputAddress" />
+          </div>
+          <div class="col-12">
+            <label for="inputAddress" class="form-label">Address</label>
+            <input
+              type="text"
+              class="form-control"
+              id="inputAddress"
+              placeholder="1234 Main St"
+            />
+          </div>
+          <div class="page-header"></div>
 
-        <div
-          id="error-box"
-          class="alert alert-danger hidden"
-          role="alert"
-        ></div>
-        <div
-          id="success-box"
-          class="alert alert-success hidden"
-          role="alert"
-        ></div>
+          <div
+            id="error-box"
+            class="alert alert-danger hidden"
+            role="alert"
+          ></div>
+          <div
+            id="success-box"
+            class="alert alert-success hidden"
+            role="alert"
+          ></div>
 
-        <div id="dropin-container"></div>
+          <div id="dropin-container"></div>
 
-        <button class="btn btn-lg btn-primary" id="submit-button">
-          Request payment method
-        </button>
+          <button class="btn btn-lg btn-primary" id="submit-button">
+            Request payment method
+          </button>
+        </form>
       </div>
       <div class="col-6">
         <div class="my-table-container p-3">
