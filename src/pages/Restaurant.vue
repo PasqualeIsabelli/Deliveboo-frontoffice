@@ -34,12 +34,12 @@ export default {
       // Salva gli elementi nel localStorage
       localStorage.setItem("cartData", JSON.stringify(dataToSave));
     },
-    removeAllItem(index) {
+    removeAllItem(product) {
       // Rimuovi tutti gli elementi dal carrello reimpostando gli array e il totale
       this.items = [];
       this.totalPrice = [];
       this.sum = 0;
-      this.cart = {};
+      this.cart = {};      
 
       // Salva nel localStorage
       this.localStorage();
@@ -54,21 +54,6 @@ export default {
     },
     // Questo è il metodo che gestisce l'aggiunta di un prodotto al carrello
     addItem(product) {
-
-      //se l'array items ha almeno un elemento allora esegui l'altro if
-      if (this.items.length > 0) {
-        // Accedi al primo elemento e confronta il restaurant_id
-        if (this.items[0].restaurant_id != this.$route.params.id) {
-          this.confDeleteCart = true;
-          this.items = [];
-          this.sum = 0;
-          this.cart = [];
-          this.totalPrice = [];
-
-          this.localStorage();
-        }
-      }
-
       // Trova l'indice del prodotto nel carrello se esiste
       const existingProductIndex = this.items.findIndex(
         (item) => item.id === product.id
@@ -158,15 +143,15 @@ export default {
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
                 <div class="text-">{{ product.price }}</div>
-                <div v-if="this.items.length > 0" class="">
-                  <button v-if="items[0]?.restaurant_id != $route.params.id" class="btn btn-light me-2"
-                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <div>
+                  <button v-if="items.length > 0 && items[0]?.restaurant_id != $route.params.id"
+                    class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    +
+                  </button>
+                  <button v-else @click="addItem(product)" class="btn btn-light me-2">
                     +
                   </button>
                 </div>
-                <button @click="addItem(product)" class="btn btn-light me-2">
-                  +
-                </button>
               </div>
             </div>
           </div>
@@ -179,16 +164,17 @@ export default {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm reset cart</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              Are you shure my frined you want this trapezio?
+            <div class="modal-body text-danger">
+              Are you sure you want to create a new cart and lose the previous one?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="removeAllItem(index)">Save
-                changes</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="removeAllItem(product)">
+                Save changes
+              </button>
             </div>
           </div>
         </div>
