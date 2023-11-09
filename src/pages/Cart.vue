@@ -7,20 +7,12 @@ export default {
             button : document.querySelector('#submit-button'),
             $errBox : ('#error-box'),
             $successBox : ('#success-box'),
-
-            // braintreeContainer : document.getElementById('dropin-container'),
             // paymentSucces : false,
         }
     },
 
     methods : {
-        // checkElement(element) {
-        //     if (!this.braintreeContainer.textContent.trim() !== '') {
-        //         setTimeout(() => {
-        //             location.reload()
-        //         }, 500);
-        //     }
-        // }
+
     },
 
     mounted() {
