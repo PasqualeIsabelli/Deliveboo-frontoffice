@@ -173,6 +173,12 @@ export default {
       <div class="col-4">
         <div v-if="items.length > 0">
           <h2 class="py-3">Il tuo carrello</h2>
+          <div v-if="this.items[0].restaurant_id != this.$route.params.id" class="alert alert-danger d-flex align-items-center" role="alert">
+            <div>
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              If you add a product from this restaurant your cart will be deleted
+            </div>
+          </div>
           <div class="my-table-container p-3">
             <table class="table table-borderless m-0">
               <tbody v-for="(item, index) in items" :key="index">
