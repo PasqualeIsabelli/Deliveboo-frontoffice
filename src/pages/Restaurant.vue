@@ -158,13 +158,37 @@ export default {
                 <h5>{{ product.name }}</h5>
                 <p>{{ product.description }}</p>
                 <div class="text-">{{ product.price }}</div>
-
-                <div class="">
-                  <button @click="addItem(product)" class="btn btn-light me-2">
+                <div v-if="this.items.length > 0" class="">
+                  <button v-if="items[0]?.restaurant_id != $route.params.id" class="btn btn-light me-2"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
                     +
                   </button>
                 </div>
+                <button @click="addItem(product)" class="btn btn-light me-2">
+                  +
+                </button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Are you shure my frined you want this trapezio?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="removeAllItem(index)">Save
+                changes</button>
             </div>
           </div>
         </div>
@@ -173,7 +197,8 @@ export default {
       <div class="col-4">
         <div v-if="items.length > 0">
           <h2 class="py-3">Il tuo carrello</h2>
-          <div v-if="this.items[0].restaurant_id != this.$route.params.id" class="alert alert-danger d-flex align-items-center" role="alert">
+          <div v-if="this.items[0].restaurant_id != this.$route.params.id"
+            class="alert alert-danger d-flex align-items-center" role="alert">
             <div>
               <i class="fa-solid fa-triangle-exclamation"></i>
               If you add a product from this restaurant your cart will be deleted
