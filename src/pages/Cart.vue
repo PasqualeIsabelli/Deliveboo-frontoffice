@@ -90,6 +90,10 @@ export default {
 
     let braintreeScript = document.createElement("script");
     braintreeScript.setAttribute("src", "/src/braintree.js");
+    setTimeout(() => {
+      document.head.appendChild(braintreeScript);
+    }, 500);
+
     document.head.appendChild(braintreeScript);
   },
   created() {
