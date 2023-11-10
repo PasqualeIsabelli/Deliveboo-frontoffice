@@ -1,7 +1,14 @@
 <script>
+import Loader from '../components/Loader.vue';
+
 export default {
+    components: {
+        Loader
+    },
     data() {
         return {
+            isLoading: true,
+            code: false,
         };
     },
 
@@ -9,6 +16,12 @@ export default {
     },
 
     mounted() {
+        setTimeout(() => {
+            this.isLoading = false;
+            setTimeout(() => {
+                this.code = true;
+            });
+        }, 2000);
     },
 
     created() {
@@ -17,9 +30,12 @@ export default {
 </script>
 
 <template>
-    <h1>This is the order checkout page</h1>
+    <div class="container mt-5">
+        <Loader v-if="isLoading"></Loader>
+        <div v-else="code">
+            <h1>Pagina di avvenuto pagamento</h1>
+        </div>
+    </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -120,6 +120,7 @@ export default {
             }
 
             if (this.orderData.customer_name && this.orderData.customer_surname && this.orderData.customer_email && this.orderData.customer_address && this.orderData.customer_phone) {
+                
                 this.orderData.total_price = this.sum;
                 axios.post("http://127.0.0.1:8000/api/orders", this.orderData)
                 console.log(this.orderData)

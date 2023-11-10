@@ -28,13 +28,9 @@ export default {
 
 <style lang="scss">
   .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     background-color: #02CCBC;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
-    z-index: 1;
   }
 
   .footer {
