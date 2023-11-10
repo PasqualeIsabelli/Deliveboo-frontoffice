@@ -33,16 +33,4 @@ export default {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
   }
 
-  .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-  }
-
-  .main-content {
-    margin-top: 103.6px;
-    margin-bottom: 345.6px;
-  }
 </style>

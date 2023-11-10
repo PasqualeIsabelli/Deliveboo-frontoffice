@@ -22,8 +22,6 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-
-
     .nav {
 
         img {
