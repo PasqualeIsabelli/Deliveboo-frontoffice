@@ -16,6 +16,7 @@ export default {
     },
 
     methods: {
+      
         addItem(product) {
             // Trova l'indice del prodotto nel carrello se esiste
             const existingProductIndex = this.items.findIndex(
@@ -138,9 +139,12 @@ export default {
 
                     <div id="dropin-container"></div>
 
-                    <button class="btn btn-lg btn-primary" id="submit-button">
-                        Request payment method
-                    </button>
+                    <router-link :to="{ name: 'order_confirmed' }">
+                      <button class="btn btn-lg btn-primary" id="submit-button">
+                        Procedi all'ordine
+                      </button>
+                    </router-link>
+
                 </form>
             </div>
             <div class="col-6">
