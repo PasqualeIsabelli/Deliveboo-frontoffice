@@ -9,7 +9,17 @@ export default {
         return {
             isLoading: true,
             code: false,
+            totalPrice: [],
+            cart: {},
+            sum: 0,
         };
+    },
+
+    computed: {
+        itemsFromLocalStorage() {
+            // Recupera gli elementi dal localStorage e analizza il JSON, se presente
+            return JSON.parse(localStorage.getItem("items") || "[]");
+        },
     },
 
     methods: {
@@ -25,17 +35,61 @@ export default {
     },
 
     created() {
+        const storedData = JSON.parse(localStorage.getItem("cartData") || "{}");
+        this.items = storedData.items || [];
+        this.sum = storedData.sum || 0;
+        this.totalPrice = storedData.totalPrice || 0;
+        this.cart = storedData.cart || {};
     },
 };
 </script>
 
 <template>
-    <div class="container mt-5">
+    <div class="container py-5">
         <Loader v-if="isLoading"></Loader>
         <div v-else="code">
-            <h1>Pagina di avvenuto pagamento</h1>
+            <h1>Il tuo ordine è stato confermato</h1>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="my-table-container p-3">
+                        <table class="table table-borderless m-0">
+                            <tbody v-for="(item, index) in items" :key="index">
+                                <tr>
+                                    <td class="text-center">
+                                        {{ cart[item.id] }}
+                                    </td>
+                                    <td>
+                                        <h5 class="card-title">{{ item.name }}</h5>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        {{ (item.price * cart[item.id]).toFixed(2) }}€
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <h5>Totale:</h5>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-center">{{ sum.toFixed(2) }}€</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.my-table-container {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+}
+</style>
