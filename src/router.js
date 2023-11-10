@@ -4,6 +4,7 @@ import {createRouter, createWebHistory} from "vue-router"
 import Home from "./pages/Home.vue"
 import Restaurant from "./pages/Restaurant.vue"
 import Cart from "./pages/Cart.vue"
+import OrderConfirmed from "./pages/OrderConfirmed.vue"
 
 // rotte
 const routes = [
@@ -21,6 +22,11 @@ const routes = [
         path: '/cart', // uri da scrivere nel browser
         name: 'cart', // nome della rotta da usare per creare un link
         component: Cart, // componente che ritorna l'html della pagina
+    },
+    {
+        path: '/order_confirmed', // uri da scrivere nel browser
+        name: 'order_confirmed', // nome della rotta da usare per creare un link
+        component: OrderConfirmed, // componente che ritorna l'html della pagina
     }
 ]
 

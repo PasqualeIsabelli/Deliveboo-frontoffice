@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -12,10 +14,21 @@ export default {
             cart: {},
             sum: 0,
             confDeleteCart: false,
+            orderData: {
+              customer_name : '',
+              customer_surname : '',
+              customer_email : '',
+              customer_phone : '',
+              customer_address : '',
+              total_price : 0,
+              status : true,
+              notes: 'ciao',
+            },
         };
     },
 
     methods: {
+
         addItem(product) {
             // Trova l'indice del prodotto nel carrello se esiste
             const existingProductIndex = this.items.findIndex(
@@ -44,7 +57,7 @@ export default {
 
             //array contenente i prezzi
             this.sum += parseFloat(product.price);
-
+            this.orderData.total_price = this.sum;
             // Salva nel localStorage
             this.localStorage();
         },
@@ -71,6 +84,14 @@ export default {
             // Salva nel localStorage
             this.localStorage();
         },
+
+        sendData() {
+          this.orderData.total_price = this.sum;
+          axios.post("http://127.0.0.1:8000/api/orders", this.orderData)
+          console.log(this.orderData)
+          this.$router.push({ name: 'order_confirmed' })
+        }
+
     },
 
     mounted() {
@@ -92,7 +113,7 @@ export default {
         braintreeScript.setAttribute("src", "/src/braintree.js");
         setTimeout(() => {
             document.head.appendChild(braintreeScript);
-        }, 500);
+        }, 750);
 
         document.head.appendChild(braintreeScript);
     },
@@ -110,27 +131,32 @@ export default {
     <div class="container pt-5">
         <div class="row">
             <div class="container main col-6">
-                <form class="row g-3">
+                <form class="row g-3" @submit.prevent="sendData()">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputName" />
+                        <input type="text" class="form-control" id="inputName"  v-model="orderData.customer_name"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputSurname" class="form-label">Surname <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputSurname" />
+                        <input type="text" class="form-control" id="inputSurname"  v-model="orderData.customer_surname"/>
                     </div>
                     <div class="col-12">
                         <label for="inputEmail" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="inputEmail" />
+                        <input type="email" class="form-control" id="inputEmail"  v-model="orderData.customer_email"/>
                     </div>
                     <div class="col-12">
                         <label for="inputPhone" class="form-label">Phone <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="inputPhone" />
+                        <input type="text" class="form-control" id="inputPhone"  v-model="orderData.customer_phone"/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Address <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23" />
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23"  v-model="orderData.customer_address"/>
                     </div>
+                    <div class="form-floating">
+                      <textarea class="form-control" placeholder="Leave order notes here" id="inputNotes" style="height: 100px" v-model="orderData.notes"></textarea>
+                      <label for="floatingTextarea2">Notes</label>
+                    </div>
+
                     <div class="page-header"></div>
 
                     <div id="error-box" class="alert alert-danger hidden" role="alert"></div>
@@ -138,9 +164,12 @@ export default {
 
                     <div id="dropin-container"></div>
 
-                    <button class="btn btn-lg btn-primary" id="submit-button">
-                        Request payment method
-                    </button>
+                    <!-- <router-link :to="{ name: 'order_confirmed' }"> -->
+                      <button type="submit" class="btn btn-lg btn-primary" id="submit-button">
+                        Procedi all'ordine
+                      </button>
+                    <!-- </router-link> -->
+
                 </form>
             </div>
             <div class="col-6">
