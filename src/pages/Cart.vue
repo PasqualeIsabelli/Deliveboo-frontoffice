@@ -15,14 +15,21 @@ export default {
             sum: 0,
             confDeleteCart: false,
             orderData: {
-              customer_name : '',
-              customer_surname : '',
-              customer_email : '',
-              customer_phone : '',
-              customer_address : '',
-              total_price : 0,
-              status : true,
-              notes: 'ciao',
+                customer_name: '',
+                customer_surname: '',
+                customer_email: '',
+                customer_phone: '',
+                customer_address: '',
+                total_price: 0,
+                status: true,
+                notes: 'ciao',
+            },
+            errors: {
+                customer_name: null,
+                customer_surname: null,
+                customer_email: null,
+                customer_phone: null,
+                customer_address: null,
             },
         };
     },
@@ -86,10 +93,39 @@ export default {
         },
 
         sendData() {
-          this.orderData.total_price = this.sum;
-          axios.post("http://127.0.0.1:8000/api/orders", this.orderData)
-          console.log(this.orderData)
-          this.$router.push({ name: 'order_confirmed' })
+            this.errors = {}
+
+            if (!this.orderData.customer_name) {
+                this.errors.customer_name = 'Nome obbligatorio'
+            }
+
+            if (!this.orderData.customer_surname) {
+                this.errors.customer_surname = 'Cognome obbligatorio'
+            }
+
+            if (!this.orderData.customer_address) {
+                this.errors.customer_address = 'Indirizzo obbligatorio'
+            }
+
+            if (!this.orderData.customer_email) {
+                this.errors.customer_email = 'Email obbligatoria'
+            }
+
+            if (!this.orderData.customer_phone) {
+                this.errors.customer_phone = 'Numero di telefono obbligatorio'
+            } else if (isNaN(this.errors.customer_phone)) {
+                this.errors.customer_phone = 'Numero di telefono non valido'
+            } else if (this.orderData.customer_phone.length < 10) {
+                this.errors.customer_phone = 'Il numero di telefono deve avere 10 cifre'
+            }
+
+            if (this.orderData.customer_name && this.orderData.customer_surname && this.orderData.customer_email && this.orderData.customer_address && this.orderData.customer_phone) {
+                this.orderData.total_price = this.sum;
+                axios.post("http://127.0.0.1:8000/api/orders", this.orderData)
+                console.log(this.orderData)
+
+                this.$router.push({ name: 'order_confirmed' })
+            }
         }
 
     },
@@ -134,27 +170,44 @@ export default {
                 <form class="row g-3" @submit.prevent="sendData()">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputName"  v-model="orderData.customer_name"/>
+                        <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name" />
+                        <div class="text-danger">
+                            {{ this.errors.customer_name }}
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label for="inputSurname" class="form-label">Surname <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputSurname"  v-model="orderData.customer_surname"/>
+                        <input type="text" class="form-control" id="inputSurname" v-model="orderData.customer_surname" />
+                        <div class="text-danger">
+                            {{ this.errors.customer_surname }}
+                        </div>
                     </div>
                     <div class="col-12">
                         <label for="inputEmail" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="inputEmail"  v-model="orderData.customer_email"/>
+                        <input type="email" class="form-control" id="inputEmail" v-model="orderData.customer_email" />
+                        <div class="text-danger">
+                            {{ this.errors.customer_email }}
+                        </div>
                     </div>
                     <div class="col-12">
                         <label for="inputPhone" class="form-label">Phone <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputPhone"  v-model="orderData.customer_phone"/>
+                        <input type="text" class="form-control" id="inputPhone" v-model="orderData.customer_phone" />
+                        <div class="text-danger">
+                            {{ this.errors.customer_phone }}
+                        </div>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Address <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23"  v-model="orderData.customer_address"/>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23"
+                            v-model="orderData.customer_address" />
+                        <div class="text-danger">
+                            {{ this.errors.customer_address }}
+                        </div>
                     </div>
                     <div class="form-floating">
-                      <textarea class="form-control" placeholder="Leave order notes here" id="inputNotes" style="height: 100px" v-model="orderData.notes"></textarea>
-                      <label for="floatingTextarea2">Notes</label>
+                        <textarea class="form-control" placeholder="Leave order notes here" id="inputNotes"
+                            style="height: 100px" v-model="orderData.notes"></textarea>
+                        <label for="floatingTextarea2">Notes</label>
                     </div>
 
                     <div class="page-header"></div>
@@ -165,9 +218,9 @@ export default {
                     <div id="dropin-container"></div>
 
                     <!-- <router-link :to="{ name: 'order_confirmed' }"> -->
-                      <button type="submit" class="btn btn-lg btn-primary" id="submit-button">
+                    <button type="submit" class="btn btn-lg btn-primary" id="submit-button">
                         Procedi all'ordine
-                      </button>
+                    </button>
                     <!-- </router-link> -->
 
                 </form>
