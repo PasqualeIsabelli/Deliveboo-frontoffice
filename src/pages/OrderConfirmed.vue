@@ -1,5 +1,5 @@
 <script>
-import Loader from '../components/Loader.vue';
+import Loader from "../components/Loader.vue"
 
 export default {
     components: {
@@ -41,6 +41,8 @@ export default {
         this.totalPrice = storedData.totalPrice || 0;
         this.cart = storedData.cart || {};
     },
+    beforeDestroy() {
+    }
 };
 </script>
 
@@ -82,7 +84,6 @@ export default {
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
