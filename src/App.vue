@@ -27,10 +27,12 @@ export default {
 </template>
 
 <style lang="scss">
-  .navbar {
-    width: 100%;
-    background-color: #02CCBC;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
-  }
+.navbar {
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
 
+.main-content {
+  background-color: white;
+}
 </style>

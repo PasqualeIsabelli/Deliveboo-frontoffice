@@ -2,7 +2,7 @@
 import { router } from '../router';
 
 export default {
-    components: { 
+    components: {
         router
     }
 }
@@ -12,9 +12,16 @@ export default {
     <div class="container-fluid py-2">
         <div class="container">
             <div class="nav d-flex justify-content-between align-items-center">
-                <router-link to="/"><img src="../assets/images/Logo.png" alt=""></router-link>
-                <!-- rotta che porta al login del back-office -->
-                <a class="px-3" href="http://127.0.0.1:8000/login" target="_blank">Accedi</a>
+                <div>
+                    <router-link to="/"><img src="../assets/images/Logo.png" alt=""></router-link>
+                </div>
+                <div>
+                    <!-- rotta che porta al login del back-office -->
+                    <a class="px-3" href="http://127.0.0.1:8000/login" target="_blank">Login</a>
+                    <a class="px-3" href="#0">Home</a>
+                    <a class="px-3" href="#0">Contact</a>
+                    <a class="px-3" href="#0"><i class="fa-solid fa-cart-shopping" style="color: #de1212;"></i></a>
+                </div>
             </div>
         </div>
     </div>

@@ -30,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <div class="container-fluid d-flex justify-content-center py-2">
+  <div class="container-fluid d-flex justify-content-center py-3">
     <div class="logo-container">
       <img style="width: 300px;" src="../assets/images/logo.png">
     </div>
@@ -38,8 +38,7 @@ export default {
       <div class="d-flex justify-content-center gap-5">
         <ul class="m-0" v-for="singleCredit in creditsList">
           <h4 class="fw-bold">{{ singleCredit.title }}</h4>
-          <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled"><a class="nav-link" href="#0">{{
-            singleLink }}</a></li>
+          <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled"><a class="nav-link" href="#0">{{ singleLink }}</a></li>
         </ul>
       </div>
     </div>
@@ -48,7 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-  background-color: #02CCBC;
-  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px -8px 24px;
 }
 </style>
