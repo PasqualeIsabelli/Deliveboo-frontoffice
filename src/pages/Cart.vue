@@ -19,6 +19,7 @@ export default {
         customer_surname: "",
         customer_email: "",
         customer_phone: "",
+        products: [],
         customer_address: "",
         total_price: 0,
         status: true,
@@ -127,6 +128,9 @@ export default {
         this.orderData.customer_phone
       ) {
         this.orderData.total_price = this.sum;
+        this.items.forEach((item) => {
+          this.orderData.products.push(item.id);
+        });
         axios.post("http://127.0.0.1:8000/api/orders", this.orderData);
         console.log(this.orderData);
 
