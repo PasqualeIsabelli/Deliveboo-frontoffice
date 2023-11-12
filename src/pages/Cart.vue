@@ -26,6 +26,7 @@ export default {
                 customer_email: "",
                 customer_phone: "",
                 products: [],
+                quantities: [], 
                 customer_address: "",
                 total_price: 0,
                 status: true,
@@ -154,24 +155,17 @@ export default {
                 this.orderData.total_price = this.sum;
                 this.items.forEach((item) => {
                     this.orderData.products.push(item.id);
+                    this.orderData.quantities.push(this.cart[item.id])
                 });
                 axios.post("http://127.0.0.1:8000/api/orders", this.orderData);
                 console.log(this.orderData);
-
+                console.log(this.cart);
                 this.$router.push({ name: "order_confirmed" });
             }
         },
     },
 
     mounted() {
-        // setTimeout(() => {
-        //     this.isLoading = false;
-        //     setTimeout(() => {
-        //         this.code = true;
-        //     });
-        // }, 2000);
-
-
 
         let jqueryScript = document.createElement("script");
         jqueryScript.setAttribute(
