@@ -23,6 +23,7 @@ export default {
   },
 
   methods: {
+
     localStorage() {
       const dataToSave = {
         items: this.items,
@@ -34,6 +35,7 @@ export default {
       // Salva gli elementi nel localStorage
       localStorage.setItem("cartData", JSON.stringify(dataToSave));
     },
+
     removeAllItem(product) {
       // Rimuovi tutti gli elementi dal carrello reimpostando gli array e il totale
       this.items = [];
@@ -44,6 +46,7 @@ export default {
       // Salva nel localStorage
       this.localStorage();
     },
+    
     fetchData() {
       // Effettua la chiamata API per ottenere i dati del ristorante
       axios

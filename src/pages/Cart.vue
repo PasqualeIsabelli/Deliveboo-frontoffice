@@ -187,8 +187,8 @@ export default {
             document.head.appendChild(braintreeScript);
         }, 750);
 
-        document.head.appendChild(braintreeScript);
     },
+
     created() {
         const storedData = JSON.parse(localStorage.getItem("cartData") || "{}");
         this.items = storedData.items || [];
@@ -196,7 +196,9 @@ export default {
         this.totalPrice = storedData.totalPrice || 0;
         this.cart = storedData.cart || {};
     },
+
 };
+
 </script>
 
 <template>
