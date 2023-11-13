@@ -17,7 +17,7 @@ export default {
                     navbar.style.backgroundColor = "rgba(65, 100, 46, 0.6)"; // Cambia il colore di sfondo quando si scorre
                     navbar.querySelectorAll("a").forEach((link) => {link.style.color = "#dbd5af"})
                 } else {
-                    navbar.style.backgroundColor = "transparent"; // Ripristina il colore di sfondo trasparenteù
+                    navbar.style.backgroundColor = "rgba(255, 255, 255, 0.3)"; // Ripristina il colore di sfondo trasparenteù
                     navbar.querySelectorAll("a").forEach((link) => {link.style.color = "black"})
                 }
             }
@@ -49,7 +49,7 @@ export default {
 
 <style lang="scss" scoped>
 nav {
-    background-color: transparent;
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     position: fixed;
     width: 100%;

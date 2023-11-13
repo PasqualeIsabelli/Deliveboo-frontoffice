@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss" scoped>
 .jumbo {
-    width: 100vw;
+    width: 100%;
     height: 500px;
     background-image: url(../assets/images/jumbo.jpg);
     background-repeat: no-repeat;
