@@ -12,27 +12,19 @@ export default {
 </script>
 
 <template>
-  <div class="navbar">
-    <TheHeader></TheHeader>
-  </div>
+  <TheHeader></TheHeader>
 
   <!-- Questo è il punto in cui il componente corrispondente alla route corrente verrà renderizzato -->
   <div class="main-content">
     <router-view />
   </div>
-
-  <div class="footer">
-    <TheFooter></TheFooter>
-  </div>
+  
+  <TheFooter></TheFooter>
 </template>
 
 <style lang="scss">
-.navbar {
-  background-color: rgb(255, 255, 255);
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-
 .main-content {
-  background-color: white;
+  background-color: #41642e;
+  background-image: linear-gradient(180deg, #41642e 75%, #4e7738 92%, #4e7738 100%);
 }
 </style>

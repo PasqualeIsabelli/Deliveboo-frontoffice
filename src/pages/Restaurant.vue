@@ -144,12 +144,11 @@ export default {
                 <p>{{ product.description }}</p>
                 <div class="text-">{{ product.price }}</div>
                 <div>
-                  <button v-if="items.length > 0 && items[0]?.restaurant_id != $route.params.id"
-                    class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <button v-if="items.length > 0 && items[0]?.restaurant_id != $route.params.id" class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     +
                   </button>
                   <button v-else @click="addItem(product)" class="btn btn-light me-2">
-                    +
+                    Add to cart
                   </button>
                 </div>
               </div>
@@ -232,7 +231,7 @@ export default {
           </div>
           <div class="my-2">
             <router-link :to="{ name: 'cart' }">
-              <button class="btn btn-primary">Vai al carrello</button>
+              <button class="btn btn-light">Vai al carrello</button>
             </router-link>
           </div>
         </div>
@@ -251,9 +250,10 @@ export default {
 .my-card {
   min-width: 200px;
   max-height: 100%;
-  background-color: #02ccbc;
+  border: 0;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  background-color: transparent !important;
   border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
   font-size: 16px;
   position: relative;
   display: flex;
@@ -283,7 +283,10 @@ export default {
 }
 
 .my-table-container {
-  border: 1px solid lightgrey;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   border-radius: 10px;
+  .table-borderless {
+    --bs-table-bg: transparent !important;
+  }
 }
 </style>
