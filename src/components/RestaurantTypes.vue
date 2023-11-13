@@ -80,98 +80,92 @@ export default {
 </script>
 
 <template>
-    <!-- slider sm -->
-    <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
-        <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
+    <section class="types-section">
+        <h1 class="text-center text-color p-3">Scegli, ordina e gusta Food Delivery!</h1>
+        <!-- slider sm -->
+        <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
+            <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
+                        <div class="card" :data-id="type.id" @click="sendData(type)">
+                            <img :src="getImg(type)" class="card-img-top" alt="" />
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <span class="overlay text-success" v-if="checkedType(type)"><i
+                                        class="fa-solid fa-check me-2"></i></span>
+                                <h3 class="card-text text-color text-center">{{ type.name }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="prev">
+                    <span><i class="fa-solid fa-chevron-left"></i></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="next">
+                    <span><i class="fa-solid fa-chevron-right"></i></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- slider md -->
+        <div class="container-fluid p-5 d-none d-md-block d-lg-none">
+            <div class="row g-3 justify-content-center">
+                <div class="col-3" v-for="(type, id) in types">
                     <div class="card" :data-id="type.id" @click="sendData(type)">
                         <img :src="getImg(type)" class="card-img-top" alt="" />
                         <div class="card-body d-flex align-items-center justify-content-center">
-                            <span class="overlay text-success" v-if="checkedType(type)"><i
-                                    class="fa-solid fa-check me-2"></i></span>
-                            <h3 class="card-text text-center">{{ type.name }}</h3>
+                            <span class="overlay text-success me-2" v-if="checkedType(type)"><i
+                                    class="fa-solid fa-check"></i></span>
+                            <h3 class="card-text text-color text-center">{{ type.name }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="prev">
-                <span><i class="fa-solid fa-chevron-left"></i></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="next">
-                <span><i class="fa-solid fa-chevron-right"></i></span>
-            </button>
         </div>
-    </div>
 
-    <!-- slider md -->
-    <div class="container-fluid p-5 d-none d-md-block d-lg-none">
-        <div class="row g-3 justify-content-center">
-            <div class="col-3" v-for="(type, i) in types">
-                <div class="card" :data-id="type.id" @click="sendData(type)">
-                    <img :src="getImg(type)" class="card-img-top" alt="" />
-                    <div class="card-body d-flex align-items-center justify-content-center">
-                        <span class="overlay text-success me-2" v-if="checkedType(type)"><i
-                                class="fa-solid fa-check"></i></span>
-                        <h3 class="card-text text-center">{{ type.name }}</h3>
+        <!-- card in lg -->
+        <div class="container-fluid ">
+            <div class="container d-flex justify-content-center gap-size">
+                <div v-for="(type, id) in types" :key="type.id">
+                    <div class="card" :data-id="type.id" @click="sendData(type)">
+                        <div class="size">
+                            <img :src="getImg(type)" class="card-img-top" />
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="overlay text-warning me-2" v-if="checkedType(type)"><i class="fa-solid fa-check"></i></span>
+                                <h3 class="card-text text-color text-center fs-5">{{ type.name }}</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- card in lg -->
-    <div class="container-fluid">
-        <div class="container d-none d-md-none d-lg-flex py-5 gap-5 justify-content-center">
-            <div v-for="(type, id) in types" :key="type.id">
-                <div class="card" :data-id="type.id" @click="sendData(type)">
-                    <img :src="getImg(type)" class="card-img-top" alt="" />
-                    <div class="card-body d-flex align-items-center justify-content-center">
-                        <span class="overlay text-success me-2" v-if="checkedType(type)"><i
-                                class="fa-solid fa-check"></i></span>
-                        <h3 class="card-text text-center">{{ type.name }}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container pb-5">
-        <div class="row gy-5">
-            <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in restaurants">
-                <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
-                    <div class="card my-card">
-                        <img :src="getImg(restaurant)" class="card-img-top" />
-                        <div class="card-body text-center">
-                            <h5 class="card-title mb-3">{{ restaurant.activity_name }}</h5>
-                            <div class="d-flex gap-3 justify-content-center">
-                                <div class="type-icon" v-for="(type) in typestrings">
-                                    <img class="image" :src="getImg(type)" />
+    <section>
+        <div class="container mt-5 pb-5">
+            <div class="row gy-5">
+                <div class="col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center" v-for="restaurant in restaurants">
+                    <router-link :to="{ name: 'restaurants.show', params: { id: restaurant.id } }">
+                        <div class="card my-card">
+                            <img :src="getImg(restaurant)" class="card-img-top" />
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-color mb-3">{{ restaurant.activity_name }}</h5>
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <div class="type-icon" v-for="(type) in typestrings">
+                                        <img class="image" :src="getImg(type)" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- <div class="my-card">
-                        <img :src="getImg(restaurant)" class="my-card-img" />
-                        <div class="my-text d-flex flex-column">
-                            {{ restaurant.activity_name }}
-                            <div class="d-flex ">
-                                <div class="type-icon" v-for="(type) in typestrings">
-                                    <img class="image" :src="getImg(type)" /> -->
-                    <!--INSERIRE DELLE ICON? OPPURE FARE DEI BADGE? VEDERE COME FARE PER ASSEGNARE DIRETTAMENTE TUTTE LE ICON DI APPARTENENZA DI QUEL RISTORANTE-->
-                    <!-- </div>
-                            </div>
-                        </div>
-                    </div> -->
-                </router-link>
+                    </router-link>
+                </div>
+            </div>
+            <div v-if="showMessage && restaurants.length === 0">
+                <h1 class="fw-bold text-center text-color p-5">Nessun ristorante trovato!</h1>
             </div>
         </div>
-        <div v-if="showMessage && restaurants.length === 0">
-            <h1 class="fw-bold text-center text-danger p-5">Nessun ristorante trovato!</h1>
-        </div>
-    </div>
+    </section>
 </template>
 
 <style lang="scss" scoped>
@@ -181,6 +175,7 @@ export default {
     .card {
         border: 0;
         text-decoration: none;
+        background-color: transparent !important;
 
         img {
             height: 100px;
@@ -222,64 +217,32 @@ export default {
 .container {
 
     .my-card {
-        background-color: #02ccbc !important;
-        color: white;
+        border: 0;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        background-color: transparent !important;
     }
-
-    // .my-card {
-    //     min-width: 299px;
-    //     background-color: #02ccbc;
-    //     border-radius: 10px;
-    //     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
-    //     font-size: 16px;
-    //     transition: all 0.3s ease;
-    //     position: relative;
-    //     display: flex;
-    //     justify-content: center;
-    //     align-items: center;
-    //     flex-direction: column;
-    //     cursor: pointer;
-    //     font-family: "Poppins", sans-serif;
-
-    //     .my-card-img {
-    //         max-height: 168px;
-    //         min-width: 100%;
-    //         object-fit: cover;
-    //         border-radius: 10px;
-    //     }
-
-    //     .type-icon {
-    //         height: 50px;
-    //         width: 50px;
-    //     }
-    // }
-
-    // .my-card .my-text {
-    //     height: 200px;
-    //     width: 80%;
-    //     margin: 0 auto;
-    //     font-size: 15px;
-    //     text-align: center;
-    //     color: white;
-    //     font-weight: 200;
-    //     letter-spacing: 2px;
-    //     opacity: 0;
-    //     max-height: 0;
-    //     transition: all 0.3s ease;
-    // }
-
-    // .my-card:hover .my-text {
-    //     transition: all 0.5s ease;
-    //     opacity: 1;
-    //     max-height: 40px;
-    //     margin: 10px;
-    // }
 }
 
 .image {
     height: 25px;
     width: 25px;
 }
+
+.size {
+    height: 60px;
+    width: 60px;
+}
+
+.types-section {
+    height: 200px;
+}
+
+.gap-size {
+    gap: 75px;
+}
+.text-color {
+    color: #dbd5af;
+}  
 
 @media screen {}
 
@@ -299,5 +262,4 @@ export default {
         max-height: 40px;
         margin: 10px;
     }
-}
-</style>
+}</style>
