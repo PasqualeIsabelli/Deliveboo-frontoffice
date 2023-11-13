@@ -8,18 +8,13 @@ export default {
     },
     data() {
         return {
-            // isLoading: true,
-            // code: false,
-            button: document.querySelector("#submit-button"),
-            $errBox: "#error-box",
-            $successBox: "#success-box",
-            // paymentSucces : false,
             items: [],
             restaurant: [],
             totalPrice: [],
             cart: {},
             sum: 0,
             confDeleteCart: false,
+
             orderData: {
                 customer_name: "",
                 customer_surname: "",
@@ -32,6 +27,7 @@ export default {
                 status: true,
                 notes: "",
             },
+
             errors: {
                 customer_name: null,
                 customer_surname: null,
@@ -181,10 +177,57 @@ export default {
         );
         document.head.appendChild(recaptchaScript);
 
-        let braintreeScript = document.createElement("script");
-        braintreeScript.setAttribute("src", "/src/braintree.js");
         setTimeout(() => {
-            document.head.appendChild(braintreeScript);
+            const button = document.querySelector('#submit-button');
+            const $errBox = $('#error-box');
+            const $successBox = $('#success-box');
+
+            function displayMessage(box, message) {
+
+                box.html(message);
+                box.removeClass('hidden');
+
+            }
+
+            function clearMessage(box) {
+
+                box.html('');
+                box.addClass('hidden');
+
+            }
+
+            braintree.dropin.create({
+                authorization: 'sandbox_fw2yzmcx_8g9hfnsjn3sxvt5r',
+                selector: '#dropin-container',
+                card: {
+                    overrides: {
+                        fields: {
+                            number: {
+                                supportedCardBrands: {
+                                },
+                            }
+                        }
+                    }
+                },
+            }, function (createErr, instance) {
+                    if (createErr) {
+                        displayMessage($errBox, createErr.message);
+                        return;
+                    }
+                button.addEventListener('click', function () {
+                clearMessage($errBox);
+                clearMessage($successBox);
+                
+                    instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+                        if (requestPaymentMethodErr) {
+                            displayMessage($errBox, requestPaymentMethodErr.message);
+                            return;
+                        }
+
+                        displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
+                    });
+                });
+            });
         }, 750);
 
     },
