@@ -3,6 +3,7 @@
 var button = document.querySelector('#submit-button');
 var $errBox = $('#error-box');
 var $successBox = $('#success-box');
+let paymentPayload = null;
 
 function displayMessage(box, message) {
 

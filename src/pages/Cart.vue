@@ -31,6 +31,7 @@ export default {
                 total_price: 0,
                 status: true,
                 notes: "",
+                payment_method_nonce: '',
             },
             errors: {
                 customer_name: null,
@@ -151,16 +152,26 @@ export default {
                 this.orderData.customer_address &&
                 this.orderData.customer_phone
             ) {
-                this.localStorage();
-                this.orderData.total_price = this.sum;
-                this.items.forEach((item) => {
-                    this.orderData.products.push(item.id);
-                    this.orderData.quantities.push(this.cart[item.id])
-                });
-                axios.post("http://127.0.0.1:8000/api/orders", this.orderData);
-                console.log(this.orderData);
-                console.log(this.cart);
-                this.$router.push({ name: "order_confirmed" });
+                // Aggiunta del token di pagamento
+                this.orderData.payment_method_nonce = payload.nonce; // Sostituisci 'TOKEN_DEL_PAGAMENTO' con il token effettivo
+
+                // Invio dei dati al backend
+                axios.post("http://127.0.0.1:8000/api/orders", this.orderData)
+                    .then(response => {
+                        // Gestione della risposta dal backend
+                        if (response.data.success) {
+                            // Se il pagamento è avvenuto con successo, mostra un messaggio di conferma all'utente
+                            alert("Pagamento effettuato con successo!");
+                        } else {
+                            // Altrimenti, gestisci l'errore o mostra un messaggio appropriato
+                            alert("Errore durante il pagamento.");
+                        }
+                    })
+                    .catch(error => {
+                        // Gestione degli errori di connessione o altri errori
+                        console.error("Errore durante la richiesta al backend:", error);
+                        alert("Si è verificato un errore. Controlla la console per ulteriori dettagli.");
+                    });
             }
         },
     },

@@ -25,7 +25,7 @@ const routes = [
     },
     {
         path: '/order_confirmed', // uri da scrivere nel browser
-        name: 'order_confirmed', // nome della rotta da usare per creare un link
+        name: 'checkout', // nome della rotta da usare per creare un link
         component: OrderConfirmed, // componente che ritorna l'html della pagina
     }
 ]
