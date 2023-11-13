@@ -50,7 +50,7 @@ export default {
     <div class="container py-5">
         <Loader v-if="isLoading"></Loader>
         <div v-else="code">
-            <h1>Il tuo ordine è stato confermato</h1>
+            <h1 class="pb-3">Il tuo ordine è stato confermato <span class="text-success"><i class="fa-solid fa-check"></i></span></h1>
 
             <div class="row">
                 <div class="col-4">

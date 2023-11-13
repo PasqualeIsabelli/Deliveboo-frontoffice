@@ -255,7 +255,7 @@ export default {
   max-height: 100%;
   border: 0;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  background-color: transparent !important;
+  background-color: #B92026 !important;
   border-radius: 10px;
   font-size: 16px;
   position: relative;
@@ -288,6 +288,7 @@ export default {
 .my-table-container {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   border-radius: 10px;
+  background-color: #F4BA3C;
   .table-borderless {
     --bs-table-bg: transparent !important;
   }
