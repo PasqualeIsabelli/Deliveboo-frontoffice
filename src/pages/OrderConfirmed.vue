@@ -47,14 +47,15 @@ export default {
 </script>
 
 <template>
-    <div class="container py-5">
+    <section class="jumbo"></section>
+    <div class="container">
         <Loader v-if="isLoading"></Loader>
         <div v-else="code">
             <h1 class="pb-3">Il tuo ordine è stato confermato <span class="text-success"><i class="fa-solid fa-check"></i></span></h1>
 
             <div class="row">
                 <div class="col-4">
-                    <div class="my-table-container p-3">
+                    <div class="my-table-container rounded-3 p-3">
                         <table class="table table-borderless m-0">
                             <tbody v-for="(item, index) in items" :key="index">
                                 <tr>
@@ -89,8 +90,19 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.my-table-container {
-    border: 1px solid lightgrey;
-    border-radius: 10px;
+.jumbo {
+    width: 100%;
+    height: 600px;
+    background-image: url(../assets/images/jumbo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
 }
+.my-table-container {
+        background-color: #F4BA3C !important;
+
+        .table-borderless {
+            --bs-table-bg: transparent !important;
+        }
+    }
 </style>

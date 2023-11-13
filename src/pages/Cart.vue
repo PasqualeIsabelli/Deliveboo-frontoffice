@@ -26,7 +26,7 @@ export default {
                 customer_email: "",
                 customer_phone: "",
                 products: [],
-                quantities: [], 
+                quantities: [],
                 customer_address: "",
                 total_price: 0,
                 status: true,
@@ -202,11 +202,13 @@ export default {
 </script>
 
 <template>
-    <div class="container py-5">
+    <div class="container my-container">
         <!-- <Loader v-if="isLoading"></Loader> -->
         <!-- <div v-else="code"> -->
         <div class="row">
             <div class="container main col-6">
+                <h2 class="py-3">Inserisci i tuoi dati</h2>
+
                 <form class="row g-3" @submit.prevent="sendData()">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
@@ -265,10 +267,10 @@ export default {
                 </form>
             </div>
             <div class="col-6">
-                <div class="my-table-container p-3">
+                <div class="container">
                     <h2 class="py-3">Il tuo carrello</h2>
 
-                    <div class="my-table-container p-3">
+                    <div class="my-table-container rounded-3 p-3">
                         <table class="table table-borderless m-0">
                             <tbody v-for="(item, index) in items" :key="index">
                                 <tr>
@@ -301,6 +303,7 @@ export default {
                                     </td>
                                     <td></td>
                                     <td class="text-center">{{ sum.toFixed(2) }}€</td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -313,6 +316,18 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.my-container {
+    padding: 130px 0 50px 0;
+
+    .my-table-container {
+        background-color: #F4BA3C !important;
+
+        .table-borderless {
+            --bs-table-bg: transparent !important;
+        }
+    }
+}
+
 .hidden {
     display: none;
 }

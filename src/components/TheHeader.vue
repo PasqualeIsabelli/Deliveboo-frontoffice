@@ -36,10 +36,10 @@ export default {
                     </div>
                     <div>
                         <!-- rotta che porta al login del back-office -->
-                        <a class="px-3 fs-3" href="http://127.0.0.1:8000/login" target="_blank">Login</a>
-                        <a class="px-3 fs-3" href="#0">Home</a>
+                        <router-link class="px-3 fs-3" to="/">Home</router-link>
                         <a class="px-3 fs-3" href="#0">Contact</a>
-                        <a class="px-3 fs-3" href="#0"><i class="fa-solid fa-cart-shopping" style="color: #de1212;"></i></a>
+                        <a class="px-3 fs-3" href="http://127.0.0.1:8000/login" target="_blank">Login</a>
+                        <router-link class="px-3 fs-3" to="/cart"><i class="fa-solid fa-cart-shopping" style="color: #de1212;"></i></router-link>
                     </div>
                 </div>
             </div>
