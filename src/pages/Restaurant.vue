@@ -41,12 +41,12 @@ export default {
       this.items = [];
       this.totalPrice = [];
       this.sum = 0;
-      this.cart = {};      
+      this.cart = {};
 
       // Salva nel localStorage
       this.localStorage();
     },
-    
+
     fetchData() {
       // Effettua la chiamata API per ottenere i dati del ristorante
       axios
@@ -133,11 +133,25 @@ export default {
 </script>
 
 <template>
-  <img class="jumbo" :src="getImg(restaurant)" alt="" />
+  <div class="container-spazio"></div>
+  <div class="container-fluid">
+    <div class="container restaurant-c d-flex justify-content-center gap-4">
+      <div class="">
+        <img class="restaurant-img" :src="getImg(restaurant)" alt="" />
+      </div>
+      <div class="card restaurant-card text-color">
+        <div class="card-body">
+          <h1 class="card-title">{{ restaurant.activity_name }}</h1>
+          <h5 class="card-text"><span class="fw-bold">Telefono:</span> {{ restaurant.phone }}</h5>
+          <h5 class="card-text"><span class="fw-bold">Indirizzo:</span> {{ restaurant.address }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-8">
-        <h2 class="py-3">{{ restaurant.activity_name }}</h2>
+        <h2 class="py-3 text-color">I nostri piatti</h2>
         <div class="row row-cols-md-2 g-3 pb-5">
           <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
             <div class="my-card">
@@ -147,11 +161,12 @@ export default {
                 <p>{{ product.description }}</p>
                 <div class="text-">{{ product.price }}</div>
                 <div>
-                  <button v-if="items.length > 0 && items[0]?.restaurant_id != $route.params.id" class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    +
+                  <button v-if="items.length > 0 && items[0]?.restaurant_id != $route.params.id"
+                    class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Aggiungi al carrello
                   </button>
                   <button v-else @click="addItem(product)" class="btn btn-light me-2">
-                    Add to cart
+                    Aggiungi al carrello
                   </button>
                 </div>
               </div>
@@ -166,16 +181,16 @@ export default {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm reset cart</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Conferma reset del carrello</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-danger">
-              Are you sure you want to create a new cart and lose the previous one?
+              Sei sicuro di voler canellare il tuo carrello e crearne uno nuovo per questo ristorante?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Indietro</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="removeAllItem(product)">
-                Save changes
+                Accetta
               </button>
             </div>
           </div>
@@ -184,12 +199,12 @@ export default {
 
       <div class="col-4">
         <div v-if="items.length > 0">
-          <h2 class="py-3">Il tuo carrello</h2>
+          <h2 class="py-3 text-color">Il tuo carrello</h2>
           <div v-if="this.items[0].restaurant_id != this.$route.params.id"
             class="alert alert-danger d-flex align-items-center" role="alert">
             <div>
               <i class="fa-solid fa-triangle-exclamation"></i>
-              If you add a product from this restaurant your cart will be deleted
+              Attenzione! Se aggiungi prodotti di questo ristorante il tuo carrello verra` cancellato.
             </div>
           </div>
           <div class="my-table-container p-3">
@@ -244,10 +259,25 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.jumbo {
-  width: 100%;
-  height: 450px;
-  object-fit: cover;
+.text-color {
+  color: #dbd5af;
+}
+
+.container-spazio {
+  height: 120px;
+}
+
+.restaurant-c {
+  padding: 15px 0;
+
+  .restaurant-img {
+    height: 350px;
+  }
+
+  .restaurant-card {
+    background-color: transparent !important;
+    border: 0;
+  }
 }
 
 .my-card {
@@ -289,6 +319,7 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   border-radius: 10px;
   background-color: #F4BA3C;
+
   .table-borderless {
     --bs-table-bg: transparent !important;
   }
