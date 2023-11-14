@@ -15,10 +15,10 @@ export default {
                 const scrollY = window.scrollY;
                 if (scrollY > 0) {
                     navbar.style.backgroundColor = "rgba(65, 100, 46, 0.6)"; // Cambia il colore di sfondo quando si scorre
-                    navbar.querySelectorAll("a").forEach((link) => {link.style.color = "#dbd5af"})
+                    navbar.querySelectorAll("a").forEach((link) => { link.style.color = "#dbd5af" })
                 } else {
                     navbar.style.backgroundColor = "rgba(255, 255, 255, 0.3)"; // Ripristina il colore di sfondo trasparenteù
-                    navbar.querySelectorAll("a").forEach((link) => {link.style.color = "black"})
+                    navbar.querySelectorAll("a").forEach((link) => { link.style.color = "black" })
                 }
             }
         },
@@ -27,21 +27,30 @@ export default {
 </script>
 
 <template>
-    <nav id="myNavbar">
-        <div class="container-fluid py-3">
-            <div class="container">
-                <div class="nav d-flex justify-content-between align-items-center">
-                    <div>
-                        <router-link to="/"><img src="../assets/images/Logo.png" alt=""></router-link>
-                    </div>
-                    <div>
-                        <!-- rotta che porta al login del back-office -->
+    <nav class="navbar navbar-expand-lg" id="myNavbar">
+        <div class="container-fluid">
+            <div>
+                <router-link to="/"><img style="width: 210px;" src="../assets/images/Logo.png" alt=""></router-link>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
                         <router-link class="px-3 fs-3" to="/">Home</router-link>
-                        <a class="px-3 fs-3" href="#0">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="px-3 fs-3" href="#0">Chi siamo</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="px-3 fs-3" href="http://127.0.0.1:8000/login" target="_blank">Login</a>
-                        <router-link class="px-3 fs-3" to="/cart"><i class="fa-solid fa-cart-shopping" style="color: #de1212;"></i></router-link>
-                    </div>
-                </div>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="px-3 fs-3" to="/cart"><i class="fa-solid fa-cart-shopping"
+                                style="color: #de1212;"></i></router-link>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -55,11 +64,8 @@ nav {
     width: 100%;
     z-index: 1;
     transition: 0.5s;
-    .nav {
-        img {
-            width: 210px;
-        }
 
+    .nav-item {
         a {
             color: rgb(0, 0, 0);
             text-decoration: none;
