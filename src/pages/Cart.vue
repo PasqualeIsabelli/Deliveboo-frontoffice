@@ -209,22 +209,23 @@ export default {
                         }
                     }
                 },
-            }, function (createErr, instance) {
+            }, (createErr, instance) => {
                     if (createErr) {
                         displayMessage($errBox, createErr.message);
                         return;
                     }
-                button.addEventListener('click', function () {
+                button.addEventListener('click', () => {
                 clearMessage($errBox);
                 clearMessage($successBox);
                 
-                    instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+                    instance.requestPaymentMethod((requestPaymentMethodErr, payload) => {
                         if (requestPaymentMethodErr) {
                             displayMessage($errBox, requestPaymentMethodErr.message);
                             return;
                         }
 
                         displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
+                        this.sendData();
                     });
                 });
             });
@@ -252,7 +253,7 @@ export default {
             <div class="container main col-6">
                 <h2 class="py-3">Inserisci i tuoi dati</h2>
 
-                <form class="row g-3" @submit.prevent="sendData()">
+                <form class="row g-3" @submit.prevent="">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name" />
@@ -303,7 +304,7 @@ export default {
                     <div id="dropin-container"></div>
 
                     <!-- <router-link :to="{ name: 'order_confirmed' }"> -->
-                    <button type="submit" class="btn btn-lg btn-primary" id="submit-button" @click="localStorage()">
+                    <button class="btn btn-lg btn-primary" id="submit-button">
                         Procedi all'ordine
                     </button>
                     <!-- </router-link> -->
