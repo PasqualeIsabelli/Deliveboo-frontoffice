@@ -221,11 +221,79 @@ export default {
                     instance.requestPaymentMethod((requestPaymentMethodErr, payload) => {
                         if (requestPaymentMethodErr) {
                             displayMessage($errBox, requestPaymentMethodErr.message);
+
+
+                            this.errors = {};
+
+                            if (!this.orderData.customer_name) {
+                                this.errors.customer_name = "Nome obbligatorio";
+                            }
+
+                            if (!this.orderData.customer_surname) {
+                                this.errors.customer_surname = "Cognome obbligatorio";
+                            }
+
+                            if (!this.orderData.customer_address) {
+                                this.errors.customer_address = "Indirizzo obbligatorio";
+                            }
+
+                            if (!this.orderData.customer_email) {
+                                this.errors.customer_email = "Email obbligatoria";
+                            }
+
+                            if (!this.orderData.customer_phone) {
+                                this.errors.customer_phone = "Numero di telefono obbligatorio";
+                            } else if (isNaN(this.errors.customer_phone)) {
+                                this.errors.customer_phone = "Numero di telefono non valido";
+                            } else if (this.orderData.customer_phone.length < 10) {
+                                this.errors.customer_phone =
+                                    "Il numero di telefono deve avere 10 cifre";
+                            }
+
                             return;
                         }
 
-                        displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
-                        this.sendData();
+                        this.errors = {};
+
+                        if (!this.orderData.customer_name) {
+                            this.errors.customer_name = "Nome obbligatorio";
+                        }
+
+                        if (!this.orderData.customer_surname) {
+                            this.errors.customer_surname = "Cognome obbligatorio";
+                        }
+
+                        if (!this.orderData.customer_address) {
+                            this.errors.customer_address = "Indirizzo obbligatorio";
+                        }
+
+                        if (!this.orderData.customer_email) {
+                            this.errors.customer_email = "Email obbligatoria";
+                        }
+
+                        if (!this.orderData.customer_phone) {
+                            this.errors.customer_phone = "Numero di telefono obbligatorio";
+                        } else if (isNaN(this.errors.customer_phone)) {
+                            this.errors.customer_phone = "Numero di telefono non valido";
+                        } else if (this.orderData.customer_phone.length < 10) {
+                            this.errors.customer_phone =
+                                "Il numero di telefono deve avere 10 cifre";
+                        }
+
+                        if (
+                            this.orderData.customer_name &&
+                            this.orderData.customer_surname &&
+                            this.orderData.customer_email &&
+                            this.orderData.customer_address &&
+                            this.orderData.customer_phone
+                        ) {
+                            displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
+                            this.sendData();
+                        } else {
+                            displayMessage($successBox, 'Card data correct, please insert your info');
+                        }
+
+
                     });
                 });
             });
@@ -256,7 +324,7 @@ export default {
                 <form class="row g-3" @submit.prevent="">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name" />
+                        <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name"/>
                         <div class="text-danger">
                             {{ this.errors.customer_name }}
                         </div>
