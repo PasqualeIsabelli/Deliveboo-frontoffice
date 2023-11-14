@@ -113,32 +113,32 @@ export default {
       this.localStorage();
     },
 
-        sendData() {
+    sendData() {
 
-            this.errorsValidation();
+      this.errorsValidation();
 
-            if (
-                this.orderData.customer_name &&
-                this.orderData.customer_surname &&
-                this.orderData.customer_email &&
-                this.orderData.customer_address &&
-                this.orderData.customer_phone
-            ) {
-                this.localStorage();
-                this.orderData.total_price = this.sum;
-                this.items.forEach((item) => {
-                    this.orderData.products.push(item.id);
-                    this.orderData.quantities.push(this.cart[item.id])
-                });
-                axios.post("http://127.0.0.1:8000/api/orders", this.orderData);
-                console.log(this.orderData);
-                console.log(this.cart);
-                this.$router.push({ name: "order_confirmed" });
-            }
-        },
+      if (
+        this.orderData.customer_name &&
+        this.orderData.customer_surname &&
+        this.orderData.customer_email &&
+        this.orderData.customer_address &&
+        this.orderData.customer_phone
+      ) {
+        this.localStorage();
+        this.orderData.total_price = this.sum;
+        this.items.forEach((item) => {
+          this.orderData.products.push(item.id);
+          this.orderData.quantities.push(this.cart[item.id])
+        });
+        axios.post("http://127.0.0.1:8000/api/orders", this.orderData);
+        console.log(this.orderData);
+        console.log(this.cart);
+        this.$router.push({ name: "order_confirmed" });
+      }
+    },
 
-        errorsValidation() {
-            this.errors = {};
+    errorsValidation() {
+      this.errors = {};
 
       if (!this.orderData.customer_name) {
         this.errors.customer_name = "Nome obbligatorio";
@@ -156,16 +156,16 @@ export default {
         this.errors.customer_email = "Email obbligatoria";
       }
 
-            if (!this.orderData.customer_phone) {
-                this.errors.customer_phone = "Numero di telefono obbligatorio";
-            } else if (isNaN(this.orderData.customer_phone)) {
-                this.errors.customer_phone = "Numero di telefono non valido";
-            } else if (this.orderData.customer_phone.length !== 10) {
-                this.errors.customer_phone =
-                    "Il numero di telefono deve avere 10 cifre";
-            }
-        }
-    },
+      if (!this.orderData.customer_phone) {
+        this.errors.customer_phone = "Numero di telefono obbligatorio";
+      } else if (isNaN(this.orderData.customer_phone)) {
+        this.errors.customer_phone = "Numero di telefono non valido";
+      } else if (this.orderData.customer_phone.length !== 10) {
+        this.errors.customer_phone =
+          "Il numero di telefono deve avere 10 cifre";
+      }
+    }
+  },
 
   mounted() {
     let jqueryScript = document.createElement("script");
@@ -197,60 +197,60 @@ export default {
         box.addClass("hidden");
       }
 
-            braintree.dropin.create({
-                authorization: 'sandbox_fw2yzmcx_8g9hfnsjn3sxvt5r',
-                selector: '#dropin-container',
-                card: {
-                    overrides: {
-                        fields: {
-                            number: {
-                                supportedCardBrands: {
-                                },
-                            }
-                        }
-                    }
+      braintree.dropin.create({
+        authorization: 'sandbox_fw2yzmcx_8g9hfnsjn3sxvt5r',
+        selector: '#dropin-container',
+        card: {
+          overrides: {
+            fields: {
+              number: {
+                supportedCardBrands: {
                 },
-            }, (createErr, instance) => {
-                    if (createErr) {
-                        displayMessage($errBox, createErr.message);
-                        return;
-                    }
-                button.addEventListener('click', () => {
-                clearMessage($errBox);
-                clearMessage($successBox);
-                
-                    instance.requestPaymentMethod((requestPaymentMethodErr, payload) => {
-                        if (requestPaymentMethodErr) {
-                            displayMessage($errBox, requestPaymentMethodErr.message);
+              }
+            }
+          }
+        },
+      }, (createErr, instance) => {
+        if (createErr) {
+          displayMessage($errBox, createErr.message);
+          return;
+        }
+        button.addEventListener('click', () => {
+          clearMessage($errBox);
+          clearMessage($successBox);
+
+          instance.requestPaymentMethod((requestPaymentMethodErr, payload) => {
+            if (requestPaymentMethodErr) {
+              displayMessage($errBox, requestPaymentMethodErr.message);
 
 
-                            this.errorsValidation();
+              this.errorsValidation();
 
-                            return;
-                        }
+              return;
+            }
 
-                        this.errorsValidation();
+            this.errorsValidation();
 
-                        if (
-                            this.orderData.customer_name &&
-                            this.orderData.customer_surname &&
-                            this.orderData.customer_email &&
-                            this.orderData.customer_address &&
-                            this.orderData.customer_phone
-                        ) {
-                            displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
-                            this.sendData();
-                        } else {
-                            displayMessage($successBox, 'Card data correct, please insert your info');
-                        }
+            if (
+              this.orderData.customer_name &&
+              this.orderData.customer_surname &&
+              this.orderData.customer_email &&
+              this.orderData.customer_address &&
+              this.orderData.customer_phone
+            ) {
+              displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
+              this.sendData();
+            } else {
+              displayMessage($successBox, 'Card data correct, please insert your info');
+            }
 
 
-                    });
-                });
-            });
-        }, 750);
+          });
+        });
+      });
+    }, 750);
 
-    },
+  },
 
   created() {
     const storedData = JSON.parse(localStorage.getItem("cartData") || "{}");
@@ -263,123 +263,116 @@ export default {
 </script>
 
 <template>
-    <div class="container my-container">
+  <div class="container my-container">
 
-        <div class="row">
-            <div class="container main col-6">
-                <h2 class="py-3">Inserisci i tuoi dati</h2>
+    <div class="row">
+      <div class="container main col-lg-6">
+        <h2 class="py-3">Inserisci i tuoi dati</h2>
 
-                <form class="row g-3" @submit.prevent="">
-                    <div class="col-md-6">
-                        <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name"/>
-                        <div class="text-danger">
-                            {{ this.errors.customer_name }}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="inputSurname" class="form-label">Surname <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputSurname" v-model="orderData.customer_surname" />
-                        <div class="text-danger">
-                            {{ this.errors.customer_surname }}
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputEmail" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="inputEmail" v-model="orderData.customer_email" />
-                        <div class="text-danger">
-                            {{ this.errors.customer_email }}
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputPhone" class="form-label">Phone <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputPhone" v-model="orderData.customer_phone" />
-                        <div class="text-danger">
-                            {{ this.errors.customer_phone }}
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputAddress" class="form-label">Address <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23"
-                            v-model="orderData.customer_address" />
-                        <div class="text-danger">
-                            {{ this.errors.customer_address }}
-                        </div>
-                    </div>
-                    <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave order notes here" id="inputNotes"
-                            style="height: 100px" v-model="orderData.notes"></textarea>
-                        <label for="floatingTextarea2">Notes</label>
-                    </div>
-
-          <div class="page-header"></div>
-
-          <div
-            id="error-box"
-            class="alert alert-danger hidden"
-            role="alert"
-          ></div>
-          <div
-            id="success-box"
-            class="alert alert-success hidden"
-            role="alert"
-          ></div>
-
-          <div id="dropin-container"></div>
-
-                    <button class="btn btn-lg btn-primary" id="submit-button">
-                        Procedi all'ordine
-                    </button>
-
-                </form>
+        <div class="container">
+          <form class="row g-3" @submit.prevent="">
+            <div class="col-md-6">
+              <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name" />
+              <div class="text-danger">
+                {{ this.errors.customer_name }}
+              </div>
             </div>
-            <div class="col-6">
-                <div class="container">
-                    <h2 class="py-3">Il tuo carrello</h2>
-
-                    <div class="my-table-container rounded-3 p-3">
-                        <table class="table table-borderless m-0">
-                            <tbody v-for="(item, index) in items" :key="index">
-                                <tr>
-                                    <td class="text-center">
-                                        {{ cart[item.id] }}
-                                    </td>
-                                    <td>
-                                        <h5 class="card-title">{{ item.name }}</h5>
-                                    </td>
-                                    <td class="text-end">
-                                        <button class="btn text-danger p-0" @click="removeItem(index)">
-                                            <i class="fa-solid fa-minus"></i>
-                                        </button>
-                                    </td>
-                                    <td class="text-center">
-                                        {{ (item.price * cart[item.id]).toFixed(2) }}€
-                                    </td>
-                                    <td>
-                                        <button class="btn text-danger p-0" @click="addItem(item)">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <h5>Totale:</h5>
-                                    </td>
-                                    <td></td>
-                                    <td class="text-center">{{ sum.toFixed(2) }}€</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="col-md-6">
+              <label for="inputSurname" class="form-label">Surname <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputSurname" v-model="orderData.customer_surname" />
+              <div class="text-danger">
+                {{ this.errors.customer_surname }}
+              </div>
             </div>
+            <div class="col-12">
+              <label for="inputEmail" class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="inputEmail" v-model="orderData.customer_email" />
+              <div class="text-danger">
+                {{ this.errors.customer_email }}
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="inputPhone" class="form-label">Phone <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputPhone" v-model="orderData.customer_phone" />
+              <div class="text-danger">
+                {{ this.errors.customer_phone }}
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="inputAddress" class="form-label">Address <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23"
+                v-model="orderData.customer_address" />
+              <div class="text-danger">
+                {{ this.errors.customer_address }}
+              </div>
+            </div>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave order notes here" id="inputNotes" style="height: 100px"
+                v-model="orderData.notes"></textarea>
+              <label for="floatingTextarea2">Notes</label>
+            </div>
+
+            <div class="page-header"></div>
+
+            <div id="error-box" class="alert alert-danger hidden" role="alert"></div>
+            <div id="success-box" class="alert alert-success hidden" role="alert"></div>
+
+            <div id="dropin-container"></div>
+
+            <button class="btn btn-lg btn-light" id="submit-button">
+              Procedi all'ordine
+            </button>
+
+          </form>
         </div>
-    </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="container">
+          <h2 class="py-3">Il tuo carrello</h2>
 
+          <div class="my-table-container rounded-3 p-3">
+            <table class="table table-borderless m-0">
+              <tbody v-for="(item, index) in items" :key="index">
+                <tr>
+                  <td class="text-center">
+                    {{ cart[item.id] }}
+                  </td>
+                  <td>
+                    <h5 class="card-title">{{ item.name }}</h5>
+                  </td>
+                  <td class="text-end">
+                    <button class="btn text-danger p-0" @click="removeItem(index)">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                  </td>
+                  <td class="text-center">
+                    {{ (item.price * cart[item.id]).toFixed(2) }}€
+                  </td>
+                  <td>
+                    <button class="btn text-danger p-0" @click="addItem(item)">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td>
+                    <h5>Totale:</h5>
+                  </td>
+                  <td></td>
+                  <td class="text-center">{{ sum.toFixed(2) }}€</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

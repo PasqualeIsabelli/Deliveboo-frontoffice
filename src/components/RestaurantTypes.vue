@@ -82,16 +82,18 @@ export default {
 <template>
     <section class="types-section">
         <h1 class="text-center text-color p-3">Scegli, ordina e gusta Food Delivery!</h1>
-        <div class="my-container px-5 g-2">
-            <div class="d-flex gap-size">
-                <div v-for="(type, id) in types" :key="type.id">
-                    <div class="card" :data-id="type.id" @click="sendData(type)">
-                        <div class="size">
-                            <img :src="getImg(type)" class="card-img-top" />
-                            <div class="d-flex align-items-center justify-content-center">
-                                <span class="overlay text-warning me-2" v-if="checkedType(type)"><i
-                                        class="fa-solid fa-check"></i></span>
-                                <h3 class="card-text text-color text-center fs-5">{{ type.name }}</h3>
+        <div class="d-flex justify-content-center">
+            <div class="my-container px-5">
+                <div class="d-flex gap-size">
+                    <div v-for="(type, id) in types" :key="type.id">
+                        <div class="card card-type border-0" :data-id="type.id" @click="sendData(type)">
+                            <div class="size">
+                                <img :src="getImg(type)" class="card-img-top" />
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="overlay text-warning me-2" v-if="checkedType(type)"><i
+                                            class="fa-solid fa-check"></i></span>
+                                    <h3 class="card-text text-color text-center fs-5">{{ type.name }}</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -130,22 +132,22 @@ export default {
 .my-container {
     overflow-x: auto;
     display: flex;
-
+    height: 100px;
     &::-webkit-scrollbar {
         width: 12px;
         background-color: #000000;
     }
-
     &::-webkit-scrollbar-thumb {
         background-color: #b10909;
         border-radius: 25px;
         border: 4px solid #000000;
     }
+    .card-type {
+        background-color: transparent !important;
+    }
 }
-
 .container-fluid {
     padding: 0 100px;
-
     .card {
         border: 0;
         text-decoration: none;
@@ -165,31 +167,8 @@ export default {
             max-width: 71px;
         }
     }
-
-    .carousel-control-next {
-        transform: translate(50%, -50%);
-    }
-
-    .carousel-control-prev {
-        transform: translate(-50%, -50%);
-    }
-
-    .carousel-control-next,
-    .carousel-control-prev {
-        width: 50px;
-        border-radius: 50%;
-        height: 50px;
-        top: 50%;
-        background-color: black;
-    }
 }
-
-.container-p-s {
-    padding: 0 50px;
-}
-
 .container {
-
     .my-card {
         border: 0;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -212,7 +191,7 @@ export default {
 }
 
 .gap-size {
-    gap: 30px;
+    gap: 50px;
 }
 
 .text-color {

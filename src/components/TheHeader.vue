@@ -17,7 +17,7 @@ export default {
                     navbar.style.backgroundColor = "rgba(65, 100, 46, 0.6)"; // Cambia il colore di sfondo quando si scorre
                     navbar.querySelectorAll("a").forEach((link) => { link.style.color = "#dbd5af" })
                 } else {
-                    navbar.style.backgroundColor = "rgba(255, 255, 255, 0.3)"; // Ripristina il colore di sfondo trasparenteù
+                    navbar.style.backgroundColor = "rgba(255, 255, 255, 0.3)"; // Ripristina il colore di sfondo trasparente
                     navbar.querySelectorAll("a").forEach((link) => { link.style.color = "black" })
                 }
             }
@@ -28,7 +28,7 @@ export default {
 
 <template>
     <nav class="navbar navbar-expand-lg" id="myNavbar">
-        <div class="container-fluid">
+        <div class="container">
             <div>
                 <router-link to="/"><img style="width: 210px;" src="../assets/images/Logo.png" alt=""></router-link>
             </div>
