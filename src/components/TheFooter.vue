@@ -31,14 +31,14 @@ export default {
 
 <template>
   <div class="container-fluid d-flex justify-content-center pt-5 pb-4">
-    <div class="logo-container">
+    <div class="d-lg-block d-none">
       <img style="width: 300px;" src="../assets/images/logo.png">
     </div>
     <div class="ul-container">
-      <div class="d-flex justify-content-center gap-5">
-        <ul class="m-0" v-for="singleCredit in creditsList">
+      <div class="d-md-flex d-sm-block justify-content-center gap-2">
+        <ul class="m-0" v-for="singleCredit in creditsList"><a class="text-dark" href="#0">
           <h4 class="fw-bold">{{ singleCredit.title }}</h4>
-          <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled"><a class="nav-link text-color" href="#0">{{ singleLink }}</a></li>
+          <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled d-lg-block d-md-block d-sm-none"><a class="nav-link text-color" href="#0">{{ singleLink }}</a></li></a>
         </ul>
       </div>
     </div>

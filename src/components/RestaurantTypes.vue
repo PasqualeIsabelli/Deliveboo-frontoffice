@@ -82,58 +82,18 @@ export default {
 <template>
     <section class="types-section">
         <h1 class="text-center text-color p-3">Scegli, ordina e gusta Food Delivery!</h1>
-        <!-- slider sm -->
-        <div class="container-fluid container-p-s py-5 d-md-none d-lg-none">
-            <div id="carouselExampleAutoplaying" class="carousel slide d-block d-md-none d-lg-none" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active" v-for="(type, id) in types" :key="type.id">
-                        <div class="card" :data-id="type.id" @click="sendData(type)">
-                            <img :src="getImg(type)" class="card-img-top" alt="" />
-                            <div class="card-body d-flex align-items-center justify-content-center">
-                                <span class="overlay text-success" v-if="checkedType(type)"><i
-                                        class="fa-solid fa-check me-2"></i></span>
-                                <h3 class="card-text text-color text-center">{{ type.name }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                    data-bs-slide="prev">
-                    <span><i class="fa-solid fa-chevron-left"></i></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                    data-bs-slide="next">
-                    <span><i class="fa-solid fa-chevron-right"></i></span>
-                </button>
-            </div>
-        </div>
-
-        <!-- slider md -->
-        <div class="container-fluid p-5 d-none d-md-block d-lg-none">
-            <div class="row g-3 justify-content-center">
-                <div class="col-3" v-for="(type, id) in types">
-                    <div class="card" :data-id="type.id" @click="sendData(type)">
-                        <img :src="getImg(type)" class="card-img-top" alt="" />
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <span class="overlay text-success me-2" v-if="checkedType(type)"><i
-                                    class="fa-solid fa-check"></i></span>
-                            <h3 class="card-text text-color text-center">{{ type.name }}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- card in lg -->
-        <div class="container-fluid ">
-            <div class="container d-flex justify-content-center gap-size">
-                <div v-for="(type, id) in types" :key="type.id">
-                    <div class="card" :data-id="type.id" @click="sendData(type)">
-                        <div class="size">
-                            <img :src="getImg(type)" class="card-img-top" />
-                            <div class="d-flex align-items-center justify-content-center">
-                                <span class="overlay text-warning me-2" v-if="checkedType(type)"><i class="fa-solid fa-check"></i></span>
-                                <h3 class="card-text text-color text-center fs-5">{{ type.name }}</h3>
+        <div class="d-flex justify-content-center">
+            <div class="my-container px-5">
+                <div class="d-flex gap-size">
+                    <div v-for="(type, id) in types" :key="type.id">
+                        <div class="card card-type border-0" :data-id="type.id" @click="sendData(type)">
+                            <div class="size">
+                                <img :src="getImg(type)" class="card-img-top" />
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="overlay text-warning me-2" v-if="checkedType(type)"><i
+                                            class="fa-solid fa-check"></i></span>
+                                    <h3 class="card-text text-color text-center fs-5">{{ type.name }}</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -169,9 +129,25 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.my-container {
+    overflow-x: auto;
+    display: flex;
+    height: 100px;
+    &::-webkit-scrollbar {
+        width: 12px;
+        background-color: #000000;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #b10909;
+        border-radius: 25px;
+        border: 4px solid #000000;
+    }
+    .card-type {
+        background-color: transparent !important;
+    }
+}
 .container-fluid {
     padding: 0 100px;
-
     .card {
         border: 0;
         text-decoration: none;
@@ -191,31 +167,8 @@ export default {
             max-width: 71px;
         }
     }
-
-    .carousel-control-next {
-        transform: translate(50%, -50%);
-    }
-
-    .carousel-control-prev {
-        transform: translate(-50%, -50%);
-    }
-
-    .carousel-control-next,
-    .carousel-control-prev {
-        width: 50px;
-        border-radius: 50%;
-        height: 50px;
-        top: 50%;
-        background-color: black;
-    }
 }
-
-.container-p-s {
-    padding: 0 50px;
-}
-
 .container {
-
     .my-card {
         border: 0;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(29, 61, 29, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -238,11 +191,12 @@ export default {
 }
 
 .gap-size {
-    gap: 75px;
+    gap: 50px;
 }
+
 .text-color {
     color: #dbd5af;
-}  
+}
 
 @media screen {}
 
@@ -262,4 +216,5 @@ export default {
         max-height: 40px;
         margin: 10px;
     }
-}</style>
+}
+</style>

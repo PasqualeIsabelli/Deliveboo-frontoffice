@@ -135,7 +135,7 @@ export default {
 <template>
   <div class="container-spazio"></div>
   <div class="container-fluid">
-    <div class="container restaurant-c d-flex justify-content-center gap-4">
+    <div class="container restaurant-c d-lg-flex d-md-block d-sm-block justify-content-center gap-4">
       <div class="">
         <img class="restaurant-img" :src="getImg(restaurant)" alt="" />
       </div>
@@ -150,10 +150,10 @@ export default {
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-8">
+      <div class="col-lg-8 col-md-12">
         <h2 class="py-3 text-color">I nostri piatti</h2>
         <div class="row row-cols-md-2 g-3 pb-5">
-          <div class="col" v-for="product in restaurant.products" v-show="product.visible == 1">
+          <div class="col-12" v-for="product in restaurant.products" v-show="product.visible == 1">
             <div class="my-card">
               <img :src="getImg(product)" class="my-card-img" alt="Img prodotto" />
               <div class="my-text d-flex flex-column justify-content-between">
@@ -174,7 +174,6 @@ export default {
           </div>
         </div>
       </div>
-
 
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -197,7 +196,7 @@ export default {
         </div>
       </div>
 
-      <div class="col-4">
+      <div class="col-lg-4 col-md-12">
         <div v-if="items.length > 0">
           <h2 class="py-3 text-color">Il tuo carrello</h2>
           <div v-if="this.items[0].restaurant_id != this.$route.params.id"
@@ -270,10 +269,6 @@ export default {
 .restaurant-c {
   padding: 15px 0;
 
-  .restaurant-img {
-    height: 350px;
-  }
-
   .restaurant-card {
     background-color: transparent !important;
     border: 0;
@@ -295,6 +290,7 @@ export default {
   flex-direction: column;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
+  line-height: 15px;
 
   .my-card-img {
     max-height: 230px;
@@ -322,6 +318,20 @@ export default {
 
   .table-borderless {
     --bs-table-bg: transparent !important;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  .restaurant-img {
+    width: 500px;
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 0px) and (max-width: 575px) {
+  .restaurant-img {
+    width: 300px;
+    margin: auto;
   }
 }
 </style>
