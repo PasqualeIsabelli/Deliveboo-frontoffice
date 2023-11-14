@@ -184,7 +184,7 @@ export default {
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-danger">
-              Sei sicuro di voler canellare il tuo carrello e crearne uno nuovo per questo ristorante?
+              Sei sicuro di voler cancellare il tuo carrello e crearne uno nuovo per questo ristorante?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-success" data-bs-dismiss="modal">Indietro</button>

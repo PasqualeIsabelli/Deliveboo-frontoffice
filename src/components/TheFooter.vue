@@ -38,7 +38,7 @@ export default {
       <div class="d-md-flex d-sm-block justify-content-center gap-2">
         <ul class="m-0" v-for="singleCredit in creditsList"><a class="text-dark" href="#0">
           <h4 class="fw-bold">{{ singleCredit.title }}</h4>
-          <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled d-lg-block d-md-block d-sm-none"><a class="nav-link text-color" href="#0">{{ singleLink }}</a></li></a>
+          <li v-for="singleLink in singleCredit.credits" class="nav-item list-unstyled d-none d-lg-block"><a class="nav-link text-color" href="#0">{{ singleLink }}</a></li></a>
         </ul>
       </div>
     </div>

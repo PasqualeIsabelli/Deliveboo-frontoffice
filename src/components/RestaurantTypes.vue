@@ -122,7 +122,7 @@ export default {
                 </div>
             </div>
             <div v-if="showMessage && restaurants.length === 0">
-                <h1 class="fw-bold text-center text-color p-5">Nessun ristorante trovato!</h1>
+                <h1 class="fw-bold text-center text-color bg-danger p-5">Ci dispiace ma nessun ristorante soddisfa i requisiti inseriti!</h1>
             </div>
         </div>
     </section>

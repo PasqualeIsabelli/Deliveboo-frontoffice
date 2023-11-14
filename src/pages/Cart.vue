@@ -272,14 +272,14 @@ export default {
         <div class="container">
           <form class="row g-3" @submit.prevent="">
             <div class="col-md-6">
-              <label for="inputName" class="form-label">Name <span class="text-danger">*</span></label>
+              <label for="inputName" class="form-label">Nome <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="inputName" v-model="orderData.customer_name" />
               <div class="text-danger">
                 {{ this.errors.customer_name }}
               </div>
             </div>
             <div class="col-md-6">
-              <label for="inputSurname" class="form-label">Surname <span class="text-danger">*</span></label>
+              <label for="inputSurname" class="form-label">Cognome <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="inputSurname" v-model="orderData.customer_surname" />
               <div class="text-danger">
                 {{ this.errors.customer_surname }}
@@ -293,14 +293,14 @@ export default {
               </div>
             </div>
             <div class="col-12">
-              <label for="inputPhone" class="form-label">Phone <span class="text-danger">*</span></label>
+              <label for="inputPhone" class="form-label">Telefono <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="inputPhone" v-model="orderData.customer_phone" />
               <div class="text-danger">
                 {{ this.errors.customer_phone }}
               </div>
             </div>
             <div class="col-12">
-              <label for="inputAddress" class="form-label">Address <span class="text-danger">*</span></label>
+              <label for="inputAddress" class="form-label">Indirizzo <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="inputAddress" placeholder="Via Brombeis 23"
                 v-model="orderData.customer_address" />
               <div class="text-danger">
