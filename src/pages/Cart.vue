@@ -241,7 +241,7 @@ export default {
               displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
               this.sendData();
             } else {
-              displayMessage($successBox, 'Card data correct, please insert your info');
+              displayMessage($successBox, 'I dati della carta sono corretti, per favore inserire i dati per la consegna.');
             }
 
 
@@ -310,7 +310,7 @@ export default {
             <div class="form-floating">
               <textarea class="form-control" placeholder="Leave order notes here" id="inputNotes" style="height: 100px"
                 v-model="orderData.notes"></textarea>
-              <label for="floatingTextarea2">Notes</label>
+              <label for="floatingTextarea2">Note</label>
             </div>
 
             <div class="page-header"></div>
