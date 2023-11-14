@@ -113,32 +113,34 @@ export default {
         },
 
         sendData() {
-            this.errors = {};
 
-            if (!this.orderData.customer_name) {
-                this.errors.customer_name = "Nome obbligatorio";
-            }
+            this.errorsValidation();
+            // this.errors = {};
 
-            if (!this.orderData.customer_surname) {
-                this.errors.customer_surname = "Cognome obbligatorio";
-            }
+            // if (!this.orderData.customer_name) {
+            //     this.errors.customer_name = "Nome obbligatorio";
+            // }
 
-            if (!this.orderData.customer_address) {
-                this.errors.customer_address = "Indirizzo obbligatorio";
-            }
+            // if (!this.orderData.customer_surname) {
+            //     this.errors.customer_surname = "Cognome obbligatorio";
+            // }
 
-            if (!this.orderData.customer_email) {
-                this.errors.customer_email = "Email obbligatoria";
-            }
+            // if (!this.orderData.customer_address) {
+            //     this.errors.customer_address = "Indirizzo obbligatorio";
+            // }
 
-            if (!this.orderData.customer_phone) {
-                this.errors.customer_phone = "Numero di telefono obbligatorio";
-            } else if (isNaN(this.errors.customer_phone)) {
-                this.errors.customer_phone = "Numero di telefono non valido";
-            } else if (this.orderData.customer_phone.length < 10) {
-                this.errors.customer_phone =
-                    "Il numero di telefono deve avere 10 cifre";
-            }
+            // if (!this.orderData.customer_email) {
+            //     this.errors.customer_email = "Email obbligatoria";
+            // }
+
+            // if (!this.orderData.customer_phone) {
+            //     this.errors.customer_phone = "Numero di telefono obbligatorio";
+            // } else if (isNaN(this.errors.customer_phone)) {
+            //     this.errors.customer_phone = "Numero di telefono non valido";
+            // } else if (this.orderData.customer_phone.length < 10) {
+            //     this.errors.customer_phone =
+            //         "Il numero di telefono deve avere 10 cifre";
+            // }
 
             if (
                 this.orderData.customer_name &&
@@ -159,6 +161,35 @@ export default {
                 this.$router.push({ name: "order_confirmed" });
             }
         },
+
+        errorsValidation() {
+            this.errors = {};
+
+            if (!this.orderData.customer_name) {
+                this.errors.customer_name = "Nome obbligatorio";
+            }
+
+            if (!this.orderData.customer_surname) {
+                this.errors.customer_surname = "Cognome obbligatorio";
+            }
+
+            if (!this.orderData.customer_address) {
+                this.errors.customer_address = "Indirizzo obbligatorio";
+            }
+
+            if (!this.orderData.customer_email) {
+                this.errors.customer_email = "Email obbligatoria";
+            }
+
+            if (!this.orderData.customer_phone) {
+                this.errors.customer_phone = "Numero di telefono obbligatorio";
+            } else if (isNaN(this.orderData.customer_phone)) {
+                this.errors.customer_phone = "Numero di telefono non valido";
+            } else if (this.orderData.customer_phone.length !== 10) {
+                this.errors.customer_phone =
+                    "Il numero di telefono deve avere 10 cifre";
+            }
+        }
     },
 
     mounted() {
@@ -223,62 +254,64 @@ export default {
                             displayMessage($errBox, requestPaymentMethodErr.message);
 
 
-                            this.errors = {};
+                            this.errorsValidation();
+                            // this.errors = {};
 
-                            if (!this.orderData.customer_name) {
-                                this.errors.customer_name = "Nome obbligatorio";
-                            }
+                            // if (!this.orderData.customer_name) {
+                            //     this.errors.customer_name = "Nome obbligatorio";
+                            // }
 
-                            if (!this.orderData.customer_surname) {
-                                this.errors.customer_surname = "Cognome obbligatorio";
-                            }
+                            // if (!this.orderData.customer_surname) {
+                            //     this.errors.customer_surname = "Cognome obbligatorio";
+                            // }
 
-                            if (!this.orderData.customer_address) {
-                                this.errors.customer_address = "Indirizzo obbligatorio";
-                            }
+                            // if (!this.orderData.customer_address) {
+                            //     this.errors.customer_address = "Indirizzo obbligatorio";
+                            // }
 
-                            if (!this.orderData.customer_email) {
-                                this.errors.customer_email = "Email obbligatoria";
-                            }
+                            // if (!this.orderData.customer_email) {
+                            //     this.errors.customer_email = "Email obbligatoria";
+                            // }
 
-                            if (!this.orderData.customer_phone) {
-                                this.errors.customer_phone = "Numero di telefono obbligatorio";
-                            } else if (isNaN(this.errors.customer_phone)) {
-                                this.errors.customer_phone = "Numero di telefono non valido";
-                            } else if (this.orderData.customer_phone.length < 10) {
-                                this.errors.customer_phone =
-                                    "Il numero di telefono deve avere 10 cifre";
-                            }
+                            // if (!this.orderData.customer_phone) {
+                            //     this.errors.customer_phone = "Numero di telefono obbligatorio";
+                            // } else if (isNaN(this.errors.customer_phone)) {
+                            //     this.errors.customer_phone = "Numero di telefono non valido";
+                            // } else if (this.orderData.customer_phone.length < 10) {
+                            //     this.errors.customer_phone =
+                            //         "Il numero di telefono deve avere 10 cifre";
+                            // }
 
                             return;
                         }
 
-                        this.errors = {};
+                        this.errorsValidation();
+                        // this.errors = {};
 
-                        if (!this.orderData.customer_name) {
-                            this.errors.customer_name = "Nome obbligatorio";
-                        }
+                        // if (!this.orderData.customer_name) {
+                        //     this.errors.customer_name = "Nome obbligatorio";
+                        // }
 
-                        if (!this.orderData.customer_surname) {
-                            this.errors.customer_surname = "Cognome obbligatorio";
-                        }
+                        // if (!this.orderData.customer_surname) {
+                        //     this.errors.customer_surname = "Cognome obbligatorio";
+                        // }
 
-                        if (!this.orderData.customer_address) {
-                            this.errors.customer_address = "Indirizzo obbligatorio";
-                        }
+                        // if (!this.orderData.customer_address) {
+                        //     this.errors.customer_address = "Indirizzo obbligatorio";
+                        // }
 
-                        if (!this.orderData.customer_email) {
-                            this.errors.customer_email = "Email obbligatoria";
-                        }
+                        // if (!this.orderData.customer_email) {
+                        //     this.errors.customer_email = "Email obbligatoria";
+                        // }
 
-                        if (!this.orderData.customer_phone) {
-                            this.errors.customer_phone = "Numero di telefono obbligatorio";
-                        } else if (isNaN(this.errors.customer_phone)) {
-                            this.errors.customer_phone = "Numero di telefono non valido";
-                        } else if (this.orderData.customer_phone.length < 10) {
-                            this.errors.customer_phone =
-                                "Il numero di telefono deve avere 10 cifre";
-                        }
+                        // if (!this.orderData.customer_phone) {
+                        //     this.errors.customer_phone = "Numero di telefono obbligatorio";
+                        // } else if (isNaN(this.errors.customer_phone)) {
+                        //     this.errors.customer_phone = "Numero di telefono non valido";
+                        // } else if (this.orderData.customer_phone.length < 10) {
+                        //     this.errors.customer_phone =
+                        //         "Il numero di telefono deve avere 10 cifre";
+                        // }
 
                         if (
                             this.orderData.customer_name &&
