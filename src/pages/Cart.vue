@@ -238,7 +238,7 @@ export default {
               this.orderData.customer_address &&
               this.orderData.customer_phone
             ) {
-              displayMessage($successBox, 'Send Payment Method Nonce (' + payload.nonce + ') to your server.');
+              displayMessage($successBox, 'Procedura di pagamento avviata.');
               this.sendData();
             } else {
               displayMessage($successBox, 'I dati della carta sono corretti, per favore inserire i dati per la consegna.');
