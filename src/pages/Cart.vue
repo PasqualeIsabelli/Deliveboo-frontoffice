@@ -115,32 +115,6 @@ export default {
         sendData() {
 
             this.errorsValidation();
-            // this.errors = {};
-
-            // if (!this.orderData.customer_name) {
-            //     this.errors.customer_name = "Nome obbligatorio";
-            // }
-
-            // if (!this.orderData.customer_surname) {
-            //     this.errors.customer_surname = "Cognome obbligatorio";
-            // }
-
-            // if (!this.orderData.customer_address) {
-            //     this.errors.customer_address = "Indirizzo obbligatorio";
-            // }
-
-            // if (!this.orderData.customer_email) {
-            //     this.errors.customer_email = "Email obbligatoria";
-            // }
-
-            // if (!this.orderData.customer_phone) {
-            //     this.errors.customer_phone = "Numero di telefono obbligatorio";
-            // } else if (isNaN(this.errors.customer_phone)) {
-            //     this.errors.customer_phone = "Numero di telefono non valido";
-            // } else if (this.orderData.customer_phone.length < 10) {
-            //     this.errors.customer_phone =
-            //         "Il numero di telefono deve avere 10 cifre";
-            // }
 
             if (
                 this.orderData.customer_name &&
@@ -255,63 +229,11 @@ export default {
 
 
                             this.errorsValidation();
-                            // this.errors = {};
-
-                            // if (!this.orderData.customer_name) {
-                            //     this.errors.customer_name = "Nome obbligatorio";
-                            // }
-
-                            // if (!this.orderData.customer_surname) {
-                            //     this.errors.customer_surname = "Cognome obbligatorio";
-                            // }
-
-                            // if (!this.orderData.customer_address) {
-                            //     this.errors.customer_address = "Indirizzo obbligatorio";
-                            // }
-
-                            // if (!this.orderData.customer_email) {
-                            //     this.errors.customer_email = "Email obbligatoria";
-                            // }
-
-                            // if (!this.orderData.customer_phone) {
-                            //     this.errors.customer_phone = "Numero di telefono obbligatorio";
-                            // } else if (isNaN(this.errors.customer_phone)) {
-                            //     this.errors.customer_phone = "Numero di telefono non valido";
-                            // } else if (this.orderData.customer_phone.length < 10) {
-                            //     this.errors.customer_phone =
-                            //         "Il numero di telefono deve avere 10 cifre";
-                            // }
 
                             return;
                         }
 
                         this.errorsValidation();
-                        // this.errors = {};
-
-                        // if (!this.orderData.customer_name) {
-                        //     this.errors.customer_name = "Nome obbligatorio";
-                        // }
-
-                        // if (!this.orderData.customer_surname) {
-                        //     this.errors.customer_surname = "Cognome obbligatorio";
-                        // }
-
-                        // if (!this.orderData.customer_address) {
-                        //     this.errors.customer_address = "Indirizzo obbligatorio";
-                        // }
-
-                        // if (!this.orderData.customer_email) {
-                        //     this.errors.customer_email = "Email obbligatoria";
-                        // }
-
-                        // if (!this.orderData.customer_phone) {
-                        //     this.errors.customer_phone = "Numero di telefono obbligatorio";
-                        // } else if (isNaN(this.errors.customer_phone)) {
-                        //     this.errors.customer_phone = "Numero di telefono non valido";
-                        // } else if (this.orderData.customer_phone.length < 10) {
-                        //     this.errors.customer_phone =
-                        //         "Il numero di telefono deve avere 10 cifre";
-                        // }
 
                         if (
                             this.orderData.customer_name &&
@@ -348,8 +270,7 @@ export default {
 
 <template>
     <div class="container my-container">
-        <!-- <Loader v-if="isLoading"></Loader> -->
-        <!-- <div v-else="code"> -->
+
         <div class="row">
             <div class="container main col-6">
                 <h2 class="py-3">Inserisci i tuoi dati</h2>
@@ -404,11 +325,10 @@ export default {
 
                     <div id="dropin-container"></div>
 
-                    <!-- <router-link :to="{ name: 'order_confirmed' }"> -->
                     <button class="btn btn-lg btn-primary" id="submit-button">
                         Procedi all'ordine
                     </button>
-                    <!-- </router-link> -->
+
                 </form>
             </div>
             <div class="col-6">
@@ -457,7 +377,7 @@ export default {
             </div>
         </div>
     </div>
-    <!-- </div> -->
+
 </template>
 
 <style lang="scss" scoped>
