@@ -124,9 +124,9 @@ export default {
           <router-link
             :to="{ name: 'restaurants.show', params: { id: restaurant.id } }"
           >
-            <div class="card my-card">
+            <div class="card my-card h-100">
               <img :src="getImg(restaurant)" class="card-img-top" />
-              <div class="card-body text-center">
+              <div class="card-body text-center d-flex flex-column justify-content-between">
                 <h5 class="card-title text-color mb-3">
                   {{ restaurant.activity_name }}
                 </h5>

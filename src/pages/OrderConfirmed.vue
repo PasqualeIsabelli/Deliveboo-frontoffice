@@ -41,8 +41,6 @@ export default {
         this.totalPrice = storedData.totalPrice || 0;
         this.cart = storedData.cart || {};
     },
-    beforeDestroy() {
-    }
 };
 </script>
 

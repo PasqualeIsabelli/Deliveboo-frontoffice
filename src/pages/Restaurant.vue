@@ -136,7 +136,7 @@ export default {
   <div class="container-spazio"></div>
   <div class="container-fluid">
     <div class="container restaurant-c d-lg-flex d-md-block d-sm-block justify-content-center gap-4">
-      <div class="">
+      <div class="mx-auto mx-lg-0 d-flex d-lg-block">
         <img class="restaurant-img" :src="getImg(restaurant)" alt="" />
       </div>
       <div class="card restaurant-card text-color">
