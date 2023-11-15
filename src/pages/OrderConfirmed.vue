@@ -51,7 +51,7 @@ export default {
     <div class="container">
         <Loader v-if="isLoading"></Loader>
         <div v-else="code">
-            <h1 class="pb-3">Il tuo ordine è stato confermato <span class="text-success"><i class="fa-solid fa-check"></i></span>, grazie per averci scelto!</h1>
+            <h1 class="pb-3"><span class="text-white"><i class="fa-solid fa-circle-check"></i></span> Il tuo ordine è stato confermato, grazie per averci scelto!</h1>
 
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-8">
