@@ -127,6 +127,7 @@ export default {
         this.localStorage();
         this.orderData.total_price = this.sum;
         this.items.forEach((item) => {
+        this.orderData.product_name.push(item.name);
           this.orderData.products.push(item.id);
           this.orderData.quantities.push(this.cart[item.id])
         });
