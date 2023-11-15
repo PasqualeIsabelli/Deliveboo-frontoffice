@@ -2,9 +2,30 @@
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
 body {
-    font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
+}
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #80b339 #41642e;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #41642e;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #80b339;
+  border-radius: 10px;
+  border: 4px solid #41642e;
 }
