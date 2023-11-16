@@ -378,7 +378,7 @@ export default {
 
 <style lang="scss" scoped>
 .my-container {
-  padding: 130px 0 50px 0;
+  padding: 130px 10px 50px 10px;
 
   .my-table-container {
     background-color: #f4ba3c !important;
