@@ -1,12 +1,11 @@
 <script>
-import TheFooter from "./components/TheFooter.vue";
 import TheHeader from "./components/TheHeader.vue";
-import TheMain from "./components/TheMain.vue";
+import TheFooter from "./components/TheFooter.vue";
+
 
 export default {
   components: {
     TheHeader,
-    TheMain,
     TheFooter,
   },
 };
@@ -14,8 +13,18 @@ export default {
 
 <template>
   <TheHeader></TheHeader>
-  <TheMain></TheMain>
+
+  <!-- Questo è il punto in cui il componente corrispondente alla route corrente verrà renderizzato -->
+  <div class="main-content">
+    <router-view />
+  </div>
+  
   <TheFooter></TheFooter>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.main-content {
+  background-color: #41642e;
+  background-image: linear-gradient(180deg, #41642e 75%, #4e7738 92%, #4e7738 100%);
+}
+</style>
